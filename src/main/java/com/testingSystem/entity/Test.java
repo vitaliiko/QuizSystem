@@ -1,6 +1,16 @@
 package com.testingSystem.entity;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,16 +27,23 @@ public class Test {
     @Column
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JoinColumn(name = "test_id")
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "testToQuestionRelation",
+            joinColumns = {
+                    @JoinColumn(name = "test_is")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "question_id")
+            }
+    )
     private List<Question> questions = new ArrayList<>();
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     @Column
-    private Integer result;
+    private Integer points;
 
     @Column
     private Date date;
@@ -66,12 +83,12 @@ public class Test {
         this.user = user;
     }
 
-    public Integer getResult() {
-        return result;
+    public Integer getPoints() {
+        return points;
     }
 
-    public void setResult(Integer result) {
-        this.result = result;
+    public void setPoints(Integer points) {
+        this.points = points;
     }
 
     public Date getDate() {

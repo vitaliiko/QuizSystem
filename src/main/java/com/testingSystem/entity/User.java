@@ -1,6 +1,16 @@
 package com.testingSystem.entity;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
@@ -22,9 +32,9 @@ public class User {
     @Column
     private boolean admin;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "user_id")
-    private Test test;
+    private List<Test> tests = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -66,11 +76,11 @@ public class User {
         this.admin = admin;
     }
 
-    public Test getTest() {
-        return test;
+    public List<Test> getTests() {
+        return tests;
     }
 
-    public void setTest(Test test) {
-        this.test = test;
+    public void setTests(List<Test> tests) {
+        this.tests = tests;
     }
 }

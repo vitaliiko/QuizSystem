@@ -1,5 +1,6 @@
 package com.testingSystem.util;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -14,26 +15,26 @@ public class HibernateSessionUtil {
     private Session currentSession;
     private Transaction currentTransaction;
 
-    public Session getCurrentSession() {
+    public Session getCurrentSession() throws HibernateException {
         return currentSession;
     }
 
-    public Session openCurrentSession() {
+    public Session openCurrentSession() throws HibernateException {
         currentSession = sessionFactory.openSession();
         return currentSession;
     }
 
-    public Session openCurrentSessionAndBeginTransaction() {
+    public Session openCurrentSessionAndBeginTransaction() throws HibernateException {
         currentSession = sessionFactory.openSession();
         currentTransaction = currentSession.beginTransaction();
         return currentSession;
     }
 
-    public void closeCurrentSession() {
+    public void closeCurrentSession() throws HibernateException {
         currentSession.close();
     }
 
-    public void commitAndcloseCurrentSession() {
+    public void commitAndCloseCurrentSession() throws HibernateException {
         currentTransaction.commit();
         currentSession.close();
     }

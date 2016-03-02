@@ -1,21 +1,21 @@
 package com.testingSystem.dao;
 
-import com.testingSystem.util.DataBaseException;
+import org.hibernate.HibernateException;
 
 import java.io.Serializable;
 import java.util.List;
 
 public interface EntityDao<T, PK extends Serializable> {
 
-    List<T> getAll(String orderParameter) throws DataBaseException;
+    List<T> getAll(String orderParameter) throws HibernateException;
 
-    T getById(PK id) throws DataBaseException;
+    T getById(PK id) throws HibernateException;
 
-    T get(String propertyName, Object value) throws DataBaseException;
+    T get(String propertyName, Object value) throws HibernateException;
 
-    PK save(T entity) throws DataBaseException;
+    PK save(T entity) throws HibernateException;
 
-    void update(T entity) throws DataBaseException;
+    void update(T entity) throws HibernateException;
 
-    void delete(T entity) throws DataBaseException;
+    void delete(T entity) throws HibernateException;
 }
