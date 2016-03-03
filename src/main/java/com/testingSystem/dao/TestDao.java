@@ -2,8 +2,10 @@ package com.testingSystem.dao;
 
 import com.testingSystem.entity.Question;
 import com.testingSystem.entity.Test;
+import com.testingSystem.entity.User;
 import com.testingSystem.util.HibernateSessionUtil;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;

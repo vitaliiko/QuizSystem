@@ -3,11 +3,15 @@ package com.testingSystem.service;
 import com.testingSystem.dao.UserDao;
 import com.testingSystem.entity.Test;
 import com.testingSystem.entity.User;
+import com.testingSystem.exception.AuthException;
 import com.testingSystem.util.HibernateSessionUtil;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -40,12 +44,32 @@ public class UserService implements EntityService<User, Long> {
         return user;
     }
 
+    public User getByEmail(String email) throws HibernateException {
+        sessionUtil.openCurrentSession();
+        User user = userDao.get("email", email);
+        sessionUtil.closeCurrentSession();
+        return user;
+    }
+
     @Override
     public Long save(User entity) throws HibernateException {
         sessionUtil.openCurrentSessionAndBeginTransaction();
         Long generatedId = userDao.save(entity);
         sessionUtil.commitAndCloseCurrentSession();
         return generatedId;
+    }
+
+    public Long create(String firstName, String lastName, String email) throws HibernateException, AuthException {
+        sessionUtil.openCurrentSessionAndBeginTransaction();
+        User user = userDao.get("email", email);
+        if (user != null) {
+            throw new AuthException("User with such email already exist");
+        }
+        user = new User(firstName, lastName, email);
+        user.getTests().add(new Test("TEST", Calendar.getInstance().getTime()));
+        Long userId = userDao.save(user);
+        sessionUtil.commitAndCloseCurrentSession();
+        return userId;
     }
 
     @Override
@@ -66,5 +90,13 @@ public class UserService implements EntityService<User, Long> {
         sessionUtil.openCurrentSessionAndBeginTransaction();
         userDao.addTest(userId, test);
         sessionUtil.commitAndCloseCurrentSession();
+    }
+
+    public List<Test> getTests(String userEmail) throws HibernateException {
+        sessionUtil.openCurrentSessionAndBeginTransaction();
+        User user = userDao.get("email", userEmail);
+        Hibernate.initialize(user.getTests());
+        sessionUtil.commitAndCloseCurrentSession();
+        return user.getTests();
     }
 }

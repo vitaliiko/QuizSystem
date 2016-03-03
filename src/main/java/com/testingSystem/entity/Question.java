@@ -41,6 +41,14 @@ public class Question {
     )
     private List<Test> tests = new ArrayList<>();
 
+    public Question() {
+    }
+
+    public Question(String text, List<Answer> answers) {
+        this.text = text;
+        this.answers = answers;
+    }
+
     public Long getId() {
         return id;
     }

@@ -1,16 +1,6 @@
 package com.testingSystem.entity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +17,7 @@ public class Test {
     @Column
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "testToQuestionRelation",
             joinColumns = {
                     @JoinColumn(name = "test_is")
@@ -50,6 +40,14 @@ public class Test {
 
     @Column
     private Integer spentTime;
+
+    public Test() {
+    }
+
+    public Test(String name, Date date) {
+        this.name = name;
+        this.date = date;
+    }
 
     public Long getId() {
         return id;

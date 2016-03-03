@@ -27,6 +27,14 @@ public class Answer {
     @JoinColumn(name = "question_id")
     private Question question;
 
+    public Answer() {
+    }
+
+    public Answer(String text, boolean isRight) {
+        this.text = text;
+        this.isRight = isRight;
+    }
+
     public Long getId() {
         return id;
     }
