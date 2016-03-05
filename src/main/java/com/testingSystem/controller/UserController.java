@@ -1,6 +1,5 @@
 package com.testingSystem.controller;
 
-import com.testingSystem.entity.Answer;
 import com.testingSystem.entity.Question;
 import com.testingSystem.entity.Test;
 import com.testingSystem.exception.AuthException;
@@ -13,11 +12,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
+import java.util.Calendar;
 import java.util.List;
 
 @Controller
 @RequestMapping("/user")
-@SessionAttributes(value = {"userEmail"})
+@SessionAttributes(value = {"userId"})
 public class UserController {
 
     @Autowired private UserService userService;
@@ -32,18 +33,16 @@ public class UserController {
 
 	@RequestMapping(value = "/signIn", method = RequestMethod.POST)
     public ModelAndView signIn(String firstName, String lastName, String email) throws AuthException {
-        if (userUtil.validateUserInfo(firstName, lastName, email)) {
-            userService.create(firstName, lastName, email);
-        }
+        Long userId = userUtil.createUser(firstName, lastName, email);
         ModelAndView model = new ModelAndView("/index");
-        model.addObject("userEmail", email);
+        model.addObject("userId", userId);
         return model;
     }
 
     @RequestMapping(value = "/startTest", method = RequestMethod.GET)
-    public ModelAndView test(@ModelAttribute String userEmail) {
-        ModelAndView model = new ModelAndView();
-        List<Test> tests = userService.getTests(userEmail);
+    public ModelAndView test(HttpSession httpSession) {
+        ModelAndView model = new ModelAndView("startTest");
+        List<Test> tests = userService.getTests((Long) httpSession.getAttribute("userId"));
         if (tests.size() > 0) {
             model.addObject("tests", tests);
         } else {
@@ -53,7 +52,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/startTest", method = RequestMethod.POST)
-    public ModelAndView startTest(@ModelAttribute String userEmail) {
+    public ModelAndView startTest(HttpSession httpSession) {
 
         return new ModelAndView("index");
     }
@@ -78,5 +77,12 @@ public class UserController {
         ModelAndView model = new ModelAndView("signIn");
         model.addObject("errorMessage", e.getMessage());
         return model;
+    }
+
+    @RequestMapping("/addTest")
+    public ModelAndView addTest(HttpSession httpSession) {
+        Test test = new Test("NEW TEST", Calendar.getInstance().getTime());
+        userService.addTest((Long) httpSession.getAttribute("userId"), test);
+        return new ModelAndView("index");
     }
 }

@@ -65,4 +65,6 @@ public class UserDao implements EntityDao<User, Long> {
         user.getTests().add(test);
         sessionUtil.getCurrentSession().update(user);
     }
+
+
 }

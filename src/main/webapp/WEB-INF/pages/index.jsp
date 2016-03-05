@@ -2,7 +2,7 @@
     <body>
         <h1>Hello</h1>
         <p>
-            ${userEmail}
+            ${userId}
         </p>
     </body>
 </html>
