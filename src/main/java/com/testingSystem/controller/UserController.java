@@ -1,30 +1,34 @@
 package com.testingSystem.controller;
 
-import com.testingSystem.entity.Question;
-import com.testingSystem.entity.Test;
+import com.testingSystem.entity.*;
 import com.testingSystem.exception.AuthException;
+import com.testingSystem.service.AnswerService;
 import com.testingSystem.service.QuestionService;
 import com.testingSystem.service.UserService;
 import com.testingSystem.util.QuestionsUtil;
 import com.testingSystem.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
-@Controller
+@RestController
 @RequestMapping("/user")
 @SessionAttributes(value = {"userId"})
+@SuppressWarnings("unchecked")
 public class UserController {
 
     @Autowired private UserService userService;
     @Autowired private UserUtil userUtil;
     @Autowired private QuestionsUtil questionsUtil;
     @Autowired private QuestionService questionService;
+    @Autowired private AnswerService answerService;
 
     @RequestMapping(value = "/signIn", method = RequestMethod.GET)
     public ModelAndView signIn() {
@@ -34,12 +38,26 @@ public class UserController {
 	@RequestMapping(value = "/signIn", method = RequestMethod.POST)
     public ModelAndView signIn(String firstName, String lastName, String email) throws AuthException {
         Long userId = userUtil.createUser(firstName, lastName, email);
-        ModelAndView model = new ModelAndView("/index");
+        ModelAndView model = new ModelAndView("index");
         model.addObject("userId", userId);
         return model;
     }
 
-    @RequestMapping(value = "/startTest", method = RequestMethod.GET)
+    @RequestMapping("/index")
+    public ModelAndView hello() {
+        ModelAndView model = new ModelAndView("index");
+        model.addObject("questions", questionService.getAll("id"));
+        return model;
+    }
+
+    @RequestMapping(value = "ajaxtest", method = RequestMethod.GET)
+    public @ResponseBody String getTime() {
+        Random random = new Random();
+        float r = random.nextFloat() * 100;
+        return "Next random number is <b>" + r + "</b>. Generated on <b>" + Calendar.getInstance().getTime();
+    }
+
+    @RequestMapping(value = "/startTest", method = RequestMethod.POST)
     public ModelAndView test(HttpSession httpSession) {
         ModelAndView model = new ModelAndView("startTest");
         List<Test> tests = userService.getTests((Long) httpSession.getAttribute("userId"));
@@ -51,10 +69,28 @@ public class UserController {
         return model;
     }
 
-    @RequestMapping(value = "/startTest", method = RequestMethod.POST)
+    @RequestMapping(value = "/startTest", method = RequestMethod.GET)
     public ModelAndView startTest(HttpSession httpSession) {
+        List<String> userAnswersList = new ArrayList<>();
+        httpSession.setAttribute("userAnswers", userAnswersList);
+        return new ModelAndView("question");
+    }
 
-        return new ModelAndView("index");
+    @RequestMapping(value = "/getQuestion")
+    public Question getQuestion() {
+        Random random = new Random();
+        return questionService.getById((long) random.nextInt(5));
+    }
+
+    @RequestMapping(value = "/getQuestions")
+    public List<Question> getQuestions() {
+        return questionService.getAll("id");
+    }
+
+    @RequestMapping(value = "/getAnswers")
+    public List<Answer> getAnswers() {
+        Random random = new Random();
+        return questionService.getById((long) random.nextInt(7)).getAnswers();
     }
 
     @RequestMapping("/createQuestions")
@@ -64,7 +100,7 @@ public class UserController {
         return model;
     }
 
-    @RequestMapping("/question")
+    @RequestMapping("/printQuestion")
     public ModelAndView question() {
         ModelAndView model = new ModelAndView("printQuestion");
         Question question = questionService.getById(1L);
@@ -84,5 +120,12 @@ public class UserController {
         Test test = new Test("NEW TEST", Calendar.getInstance().getTime());
         userService.addTest((Long) httpSession.getAttribute("userId"), test);
         return new ModelAndView("index");
+    }
+
+    @RequestMapping(value = "/setUserAnswer", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public void getUserAnswer(String answer, HttpSession session) {
+        ((List<String>) session.getAttribute("userAnswers")).add(answer);
+        System.out.println("ANSWER: " + answer);
     }
 }

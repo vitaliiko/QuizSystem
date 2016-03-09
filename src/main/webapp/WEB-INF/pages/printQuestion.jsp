@@ -5,7 +5,7 @@
     <title>Question</title>
 </head>
 <body>
-    ${question.text}
+    ${question.questionText}
     <c:forEach var="answer" items="${question.answers}">
         ${answer.text}
     </c:forEach>

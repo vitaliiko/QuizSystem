@@ -1,22 +1,17 @@
 package com.testingSystem.entity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table
-public class Question {
+public class Question implements Serializable {
 
     @Id
     @GeneratedValue
@@ -24,12 +19,14 @@ public class Question {
     private Long id;
 
     @Column
-    private String text;
+    private String questionText;
 
+    @JsonBackReference
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "question_id")
     private List<Answer> answers = new ArrayList<>();
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "testToQuestionRelation",
             joinColumns = {
@@ -44,8 +41,8 @@ public class Question {
     public Question() {
     }
 
-    public Question(String text, List<Answer> answers) {
-        this.text = text;
+    public Question(String questionText, List<Answer> answers) {
+        this.questionText = questionText;
         this.answers = answers;
     }
 
@@ -57,12 +54,12 @@ public class Question {
         this.id = id;
     }
 
-    public String getText() {
-        return text;
+    public String getQuestionText() {
+        return questionText;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setQuestionText(String text) {
+        this.questionText = text;
     }
 
     public List<Answer> getAnswers() {

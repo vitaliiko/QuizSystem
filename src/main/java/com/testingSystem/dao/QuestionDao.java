@@ -68,7 +68,7 @@ public class QuestionDao implements EntityDao<Question, Long> {
 
     public void setText(Long questionId, String text) throws HibernateException {
         Question question = (Question) sessionUtil.getCurrentSession().get(Question.class, questionId);
-        question.setText(text);
+        question.setQuestionText(text);
         sessionUtil.getCurrentSession().update(question);
     }
 }

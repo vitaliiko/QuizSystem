@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class QuestionsUtil {
@@ -16,22 +17,20 @@ public class QuestionsUtil {
 
     public void createQuestions() {
         List<Question> questions = new ArrayList<>();
-        questions.add(new Question("question1", createAnswers()));
-        questions.add(new Question("question2", createAnswers()));
-        questions.add(new Question("question3", createAnswers()));
-        questions.add(new Question("question4", createAnswers()));
-        questions.add(new Question("question5", createAnswers()));
-        questions.add(new Question("question6", createAnswers()));
-        questions.add(new Question("question7", createAnswers()));
+        for (int i = 0; i < 10; i++) {
+            questions.add(new Question("question" + i, createAnswers()));
+        }
         questions.forEach(questionService::save);
     }
 
     private List<Answer> createAnswers() {
         List<Answer> answers = new ArrayList<>();
-        answers.add(new Answer("sdfsdf", false));
-        answers.add(new Answer("sdfsdfsdf", false));
-        answers.add(new Answer("sdsdfsdfsdfsdffsdf", true));
-        answers.add(new Answer("sdfsdfsdfsdf", false));
+        Random random = new Random();
+        int answCount = random.nextInt(4) + 1;
+        for (int i = 0; i < answCount; i++) {
+            answers.add(new Answer(String.valueOf(random.nextDouble()), false));
+        }
+        answers.add(new Answer(String.valueOf(random.nextDouble()), true));
         return answers;
     }
 }
