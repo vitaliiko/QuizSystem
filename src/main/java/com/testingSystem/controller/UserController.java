@@ -2,9 +2,7 @@ package com.testingSystem.controller;
 
 import com.testingSystem.entity.*;
 import com.testingSystem.exception.AuthException;
-import com.testingSystem.service.AnswerService;
-import com.testingSystem.service.QuestionService;
-import com.testingSystem.service.UserService;
+import com.testingSystem.service.*;
 import com.testingSystem.util.QuestionsUtil;
 import com.testingSystem.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;

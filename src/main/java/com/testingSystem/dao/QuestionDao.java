@@ -4,6 +4,7 @@ import com.testingSystem.entity.Answer;
 import com.testingSystem.entity.Question;
 import com.testingSystem.util.HibernateSessionUtil;
 import org.hibernate.HibernateException;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,12 @@ import java.util.List;
 public class QuestionDao implements EntityDao<Question, Long> {
 
     @Autowired
-    private HibernateSessionUtil sessionUtil;
+    private SessionFactory sessionFactory;
     private Class<Question> clazz = Question.class;
 
     @Override
     public List<Question> getAll(String orderParameter) throws HibernateException {
-        return (List<Question>) sessionUtil.getCurrentSession()
+        return (List<Question>) sessionFactory.getCurrentSession()
                 .createCriteria(clazz)
                 .addOrder(Order.asc(orderParameter))
                 .list();
@@ -29,13 +30,13 @@ public class QuestionDao implements EntityDao<Question, Long> {
 
     @Override
     public Question getById(Long id) throws HibernateException {
-        return (Question) sessionUtil.getCurrentSession()
+        return (Question) sessionFactory.getCurrentSession()
                 .get(clazz, id);
     }
 
     @Override
     public Question get(String propertyName, Object value) throws HibernateException {
-        List<Question> list = (List<Question>) sessionUtil.getCurrentSession()
+        List<Question> list = (List<Question>) sessionFactory.getCurrentSession()
                 .createCriteria(clazz)
                 .add(Restrictions.eq(propertyName, value))
                 .list();
@@ -47,28 +48,28 @@ public class QuestionDao implements EntityDao<Question, Long> {
 
     @Override
     public Long save(Question entity) throws HibernateException {
-        return (Long) sessionUtil.getCurrentSession().save(entity);
+        return (Long) sessionFactory.getCurrentSession().save(entity);
     }
 
     @Override
     public void update(Question entity) throws HibernateException {
-        sessionUtil.getCurrentSession().update(entity);
+        sessionFactory.getCurrentSession().update(entity);
     }
 
     @Override
     public void delete(Question entity) throws HibernateException {
-        sessionUtil.getCurrentSession().delete(entity);
+        sessionFactory.getCurrentSession().delete(entity);
     }
 
     public void setAnswers(Long questionId, List<Answer> answers) throws HibernateException {
-        Question question = (Question) sessionUtil.getCurrentSession().get(Question.class, questionId);
+        Question question = (Question) sessionFactory.getCurrentSession().get(Question.class, questionId);
         question.setAnswers(answers);
-        sessionUtil.getCurrentSession().update(question);
+        sessionFactory.getCurrentSession().update(question);
     }
 
     public void setText(Long questionId, String text) throws HibernateException {
-        Question question = (Question) sessionUtil.getCurrentSession().get(Question.class, questionId);
+        Question question = (Question) sessionFactory.getCurrentSession().get(Question.class, questionId);
         question.setQuestionText(text);
-        sessionUtil.getCurrentSession().update(question);
+        sessionFactory.getCurrentSession().update(question);
     }
 }

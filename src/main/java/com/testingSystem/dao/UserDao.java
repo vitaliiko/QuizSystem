@@ -17,10 +17,7 @@ import java.util.List;
 public class UserDao implements EntityDao<User, Long> {
 
     @Autowired
-    private HibernateSessionUtil sessionUtil;
-    @Autowired
     private SessionFactory sessionFactory;
-
     private Class<User> clazz = User.class;
 
     @Override
