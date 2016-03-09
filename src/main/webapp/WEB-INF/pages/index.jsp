@@ -28,6 +28,14 @@
             </p>
             <div id="result"></div>
 
+            <c:if test="${users != null}">
+                <c:forEach var="user" items="${users}">
+                    ${user.id} ${user.firstName} ${user.lastName} ${user.email} <br>
+                </c:forEach>
+            </c:if>
+
+            ${message} <br>
+
             <c:forEach var="question" items="${questions}">
                 ${question.questionText} <br>
                 <c:forEach var="answer" items="${question.answers}">

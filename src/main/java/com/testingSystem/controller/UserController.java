@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,7 +25,7 @@ import java.util.Random;
 @SuppressWarnings("unchecked")
 public class UserController {
 
-    @Autowired private UserService userService;
+    @Resource(name = "userServiceImpl") private UserService userService;
     @Autowired private UserUtil userUtil;
     @Autowired private QuestionsUtil questionsUtil;
     @Autowired private QuestionService questionService;
@@ -38,15 +39,21 @@ public class UserController {
 	@RequestMapping(value = "/signIn", method = RequestMethod.POST)
     public ModelAndView signIn(String firstName, String lastName, String email) throws AuthException {
         Long userId = userUtil.createUser(firstName, lastName, email);
-        ModelAndView model = new ModelAndView("index");
+        ModelAndView model = new ModelAndView("redirect:/user/index");
         model.addObject("userId", userId);
         return model;
     }
 
     @RequestMapping("/index")
-    public ModelAndView hello() {
+    public ModelAndView index() {
         ModelAndView model = new ModelAndView("index");
         model.addObject("questions", questionService.getAll("id"));
+        List<User> userList = userService.getAll("id");
+        if (userList.size() > 0) {
+            model.addObject("users", userList);
+        } else {
+            model.addObject("message", "Users List is empty");
+        }
         return model;
     }
 

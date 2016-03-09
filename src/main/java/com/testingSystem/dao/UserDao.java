@@ -4,6 +4,7 @@ import com.testingSystem.entity.Test;
 import com.testingSystem.entity.User;
 import com.testingSystem.util.HibernateSessionUtil;
 import org.hibernate.HibernateException;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,14 @@ public class UserDao implements EntityDao<User, Long> {
 
     @Autowired
     private HibernateSessionUtil sessionUtil;
+    @Autowired
+    private SessionFactory sessionFactory;
+
     private Class<User> clazz = User.class;
 
     @Override
     public List<User> getAll(String orderParameter) throws HibernateException {
-        return (List<User>) sessionUtil.getCurrentSession()
+        return (List<User>) sessionFactory.getCurrentSession()
                 .createCriteria(clazz)
                 .addOrder(Order.asc(orderParameter))
                 .list();
@@ -29,13 +33,13 @@ public class UserDao implements EntityDao<User, Long> {
 
     @Override
     public User getById(Long id) throws HibernateException {
-        return (User) sessionUtil.getCurrentSession()
+        return (User) sessionFactory.getCurrentSession()
                 .get(clazz, id);
     }
 
     @Override
     public User get(String propertyName, Object value) throws HibernateException {
-        List<User> list = (List<User>) sessionUtil.getCurrentSession()
+        List<User> list = (List<User>) sessionFactory.getCurrentSession()
                 .createCriteria(clazz)
                 .add(Restrictions.eq(propertyName, value))
                 .list();
@@ -47,23 +51,23 @@ public class UserDao implements EntityDao<User, Long> {
 
     @Override
     public Long save(User entity) throws HibernateException {
-        return (Long) sessionUtil.getCurrentSession().save(entity);
+        return (Long) sessionFactory.getCurrentSession().save(entity);
     }
 
     @Override
     public void update(User entity) throws HibernateException {
-        sessionUtil.getCurrentSession().update(entity);
+        sessionFactory.getCurrentSession().update(entity);
     }
 
     @Override
     public void delete(User entity) throws HibernateException {
-        sessionUtil.getCurrentSession().delete(entity);
+        sessionFactory.getCurrentSession().delete(entity);
     }
 
     public void addTest(Long userId, Test test) throws HibernateException {
         User user = getById(userId);
         user.getTests().add(test);
-        sessionUtil.getCurrentSession().update(user);
+        sessionFactory.getCurrentSession().update(user);
     }
 
 

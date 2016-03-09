@@ -21,6 +21,13 @@
 
         <button type="submit">Sign in</button>
     </form>
+
+    <form action="/user/signIn" method="post">
+        <input type="hidden" name="firstName" value="Vasyl">
+        <input type="hidden" name="lastName" value="Ivanov">
+        <input type="hidden" name="email" value="vasyl.ivanov@gmail.com">
+        <button type="submit">Default user</button>
+    </form>
 </div>
 </body>
 </html>
