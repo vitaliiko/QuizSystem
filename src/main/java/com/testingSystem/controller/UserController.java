@@ -92,6 +92,16 @@ public class UserController {
         return questionService.getAll("id");
     }
 
+    @RequestMapping(value = "/addQuestion", method = RequestMethod.GET)
+    public ModelAndView addQuestion() {
+        return new ModelAndView("addQuestion");
+    }
+
+    @RequestMapping(value = "/addQuestion", method = RequestMethod.POST)
+    public String addQuestion(@RequestBody String answers) {
+        return answers;
+    }
+
     @RequestMapping(value = "/getAnswers")
     public List<Answer> getAnswers() {
         Random random = new Random();
@@ -127,10 +137,18 @@ public class UserController {
         return new ModelAndView("index");
     }
 
+    @RequestMapping("/getTests")
+    public List<Test> getTests(HttpSession httpSession) {
+        Long id = (Long) httpSession.getAttribute("userId");
+        return userService.getTests(id);
+    }
+
     @RequestMapping(value = "/setUserAnswer", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public void getUserAnswer(String answer, HttpSession session) {
-        ((List<String>) session.getAttribute("userAnswers")).add(answer);
-        System.out.println("ANSWER: " + answer);
+    public void getUserAnswer(@RequestBody String answer, HttpSession session) {
+        List<String> answerList = ((List<String>) session.getAttribute("userAnswers"));
+        answerList.add(answer);
+        System.out.println("ANSWERS : ");
+        answerList.forEach(System.out::println);
     }
 }

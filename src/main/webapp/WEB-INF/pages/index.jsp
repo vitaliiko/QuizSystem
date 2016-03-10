@@ -35,14 +35,6 @@
             </c:if>
 
             ${message} <br>
-
-            <c:forEach var="question" items="${questions}">
-                ${question.questionText} <br>
-                <c:forEach var="answer" items="${question.answers}">
-                    ${answer.text} <br>
-                </c:forEach>
-                <br>
-            </c:forEach>
         </div>
     </body>
 </html>

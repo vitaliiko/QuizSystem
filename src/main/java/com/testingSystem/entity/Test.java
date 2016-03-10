@@ -1,5 +1,8 @@
 package com.testingSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +20,7 @@ public class Test {
     @Column
     private String name;
 
+    @JsonBackReference
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "testToQuestionRelation",
             joinColumns = {
@@ -28,6 +32,7 @@ public class Test {
     )
     private List<Question> questions = new ArrayList<>();
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

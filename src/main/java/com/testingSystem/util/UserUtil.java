@@ -20,14 +20,13 @@ public class UserUtil {
     @Resource(name = "userServiceImpl")
     private UserService userService;
 
-    private boolean validateUserInfo(String firstName, String lastName, String email) throws AuthException {
+    private boolean validateUserInfo(String firstName, String lastName, String email, User user) throws AuthException {
         if (!EMAIL_PATTERN.matcher(email).matches()) {
             throw new AuthException("Wrong email");
         }
         if (!NAME_PATTERN.matcher(firstName).matches() || !NAME_PATTERN.matcher(lastName).matches()) {
             throw new AuthException("Wrong name");
         }
-        User user = userService.getByEmail(email);
         if (user != null && !user.getFirstName().equals(firstName) && !user.getLastName().equals(lastName)) {
             throw new AuthException("User with such email already exist");
         }
@@ -35,10 +34,13 @@ public class UserUtil {
     }
 
     public Long createUser(String firstName, String lastName, String email) throws AuthException {
-        validateUserInfo(firstName, lastName, email);
-        User user = new User(firstName, lastName, email);
-        user.getTests().add(new Test("TEST", Calendar.getInstance().getTime()));
-        Long userId = userService.save(user);
-        return userId;
+        User user = userService.getByEmail(email);
+        validateUserInfo(firstName, lastName, email, user);
+        if (user == null) {
+            user = new User(firstName, lastName, email);
+            user.getTests().add(new Test("TEST", Calendar.getInstance().getTime()));
+            return userService.save(user);
+        }
+        return user.getId();
     }
 }
