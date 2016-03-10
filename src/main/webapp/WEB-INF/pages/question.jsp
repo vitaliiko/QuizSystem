@@ -22,7 +22,7 @@
                time = 30;
                var input = $("input[name='answer'][type='radio']:checked");
                var userSelection;
-               if (input.length > 0) {
+               if (input.length) {
                    userSelection = input.val();
                } else {
                    userSelection = null;
@@ -36,7 +36,7 @@
            });
         });
 
-        var time = 29;
+        var time = 30;
         setInterval(function() {
             $('#timer').text('00:' + time);
             time--;

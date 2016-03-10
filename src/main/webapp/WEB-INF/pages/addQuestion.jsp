@@ -33,7 +33,7 @@
                 }
                 $.ajax({
                     url: '/user/addQuestion',
-                    data: answers,
+                    data: {question: {id: 1, name: 'wwerwer'}, answers: [{name: 'fsdfsaf', checked: 'true'}, {name: 'fsdfsaf', checked: 'false'}, {name: 'fsdfsaf', checked: 'false'}]},
                     type: 'POST',
                     success: function(data) {
                         alert(data);

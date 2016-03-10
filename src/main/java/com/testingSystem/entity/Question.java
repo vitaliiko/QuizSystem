@@ -21,7 +21,7 @@ public class Question implements Serializable {
     @Column
     private String questionText;
 
-    @JsonBackReference
+//    @JsonBackReference
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "question_id")
     private List<Answer> answers = new ArrayList<>();
