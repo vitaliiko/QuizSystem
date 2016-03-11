@@ -19,26 +19,22 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public List<Answer> getAll(String orderParameter) throws HibernateException {
-        List<Answer> answers = answerDao.getAll(orderParameter);
-        return answers;
+        return answerDao.getAll(orderParameter);
     }
 
     @Override
     public Answer getById(Long id) throws HibernateException {
-        Answer answer = answerDao.getById(id);
-        return answer;
+        return answerDao.getById(id);
     }
 
     @Override
     public Answer get(String propertyName, Object value) throws HibernateException {
-        Answer answer = answerDao.get(propertyName, value);
-        return answer;
+        return answerDao.get(propertyName, value);
     }
 
     @Override
     public Long save(Answer entity) throws HibernateException {
-        Long generatedId = answerDao.save(entity);
-        return generatedId;
+        return answerDao.save(entity);
     }
 
     @Override

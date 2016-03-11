@@ -20,26 +20,22 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public List<Question> getAll(String orderParameter) throws HibernateException {
-        List<Question> questions = questionDao.getAll(orderParameter);
-        return questions;
+        return questionDao.getAll(orderParameter);
     }
 
     @Override
     public Question getById(Long id) throws HibernateException {
-        Question question = questionDao.getById(id);
-        return question;
+        return questionDao.getById(id);
     }
 
     @Override
     public Question get(String propertyName, Object value) throws HibernateException {
-        Question question = questionDao.get(propertyName, value);
-        return question;
+        return questionDao.get(propertyName, value);
     }
 
     @Override
     public Long save(Question entity) throws HibernateException {
-        Long generatedId = questionDao.save(entity);
-        return generatedId;
+        return questionDao.save(entity);
     }
 
     @Override

@@ -1,17 +1,16 @@
 package com.testingSystem.dao;
 
 import com.testingSystem.entity.Answer;
-import com.testingSystem.util.HibernateSessionUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Service
+@Repository
 @SuppressWarnings("unchecked")
 public class AnswerDao implements EntityDao<Answer, Long> {
 

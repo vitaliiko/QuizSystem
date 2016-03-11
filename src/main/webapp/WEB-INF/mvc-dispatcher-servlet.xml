@@ -39,4 +39,11 @@
 
     <bean name="jsonTemplate" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
 
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.testingSystem.controller.QuizInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
 </beans>

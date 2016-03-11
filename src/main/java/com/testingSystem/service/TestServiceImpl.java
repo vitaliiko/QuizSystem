@@ -20,26 +20,22 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public List<Test> getAll(String orderParameter) throws HibernateException {
-        List<Test> tests = testDao.getAll(orderParameter);
-        return tests;
+        return testDao.getAll(orderParameter);
     }
 
     @Override
     public Test getById(Long id) throws HibernateException {
-        Test test = testDao.getById(id);
-        return test;
+        return testDao.getById(id);
     }
 
     @Override
     public Test get(String propertyName, Object value) throws HibernateException {
-        Test test = testDao.get(propertyName, value);
-        return test;
+        return testDao.get(propertyName, value);
     }
 
     @Override
     public Long save(Test entity) throws HibernateException {
-        Long generatedId = testDao.save(entity);
-        return generatedId;
+        return testDao.save(entity);
     }
 
     @Override

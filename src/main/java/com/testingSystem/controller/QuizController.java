@@ -21,7 +21,7 @@ import java.util.Random;
 @RequestMapping("/user")
 @SessionAttributes(value = {"userId"})
 @SuppressWarnings("unchecked")
-public class UserController {
+public class QuizController {
 
     @Resource(name = "userServiceImpl") private UserService userService;
     @Autowired private UserUtil userUtil;

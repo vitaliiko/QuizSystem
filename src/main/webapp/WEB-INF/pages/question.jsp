@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>AJAX</title>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js" ></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js" ></script>
 
     <script>
         function getQuestion() {
@@ -19,31 +19,30 @@
 
         $(document).ready(function() {
            $('#sendAnswer').click(function() {
-               time = 30;
-               var input = $("input[name='answer'][type='radio']:checked");
-               var userSelection;
-               if (input.length) {
-                   userSelection = input.val();
+               var userSelection = $("input[name='answer'][type='radio']:checked");
+               if (userSelection.length) {
+                   time = 30;
+                   $.ajax({
+                       url: '/user/setUserAnswer',
+                       data: userSelection.val(),
+                       type: 'POST',
+                       success: getQuestion()
+                   });
                } else {
-                   userSelection = null;
+                   alert("Please, select answer")
                }
-               $.ajax({
-                   url: '/user/setUserAnswer',
-                   data: {userSelection},
-                   type: 'POST',
-                   success: getQuestion()
-               });
+
            });
         });
 
         var time = 30;
         setInterval(function() {
-            $('#timer').text('00:' + time);
-            time--;
+            $('#timer').text((time < 10 ? '00:0' : '00:') + time);
             if (time == 0) {
                 getQuestion();
                 time = 30;
             }
+            time--;
         }, 1000);
     </script>
 

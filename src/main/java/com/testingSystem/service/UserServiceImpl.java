@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 @SuppressWarnings("unchecked")
 public class UserServiceImpl implements UserService {
 
@@ -22,60 +23,46 @@ public class UserServiceImpl implements UserService {
     @Autowired private HibernateEntityInitializer entityInitializer;
 
     @Override
-    @Transactional
     public List<User> getAll(String orderParameter) throws HibernateException {
-        List<User> users = userDao.getAll(orderParameter);
-        return users;
+        return userDao.getAll(orderParameter);
     }
 
     @Override
-    @Transactional
     public User getById(Long id) throws HibernateException {
-        User user = userDao.getById(id);
-        return user;
+        return userDao.getById(id);
     }
 
     @Override
-    @Transactional
     public User get(String propertyName, Object value) throws HibernateException {
-        User user = userDao.get(propertyName, value);
-        return user;
+        return userDao.get(propertyName, value);
     }
 
     @Override
-    @Transactional
     public User getByEmail(String email) throws HibernateException {
-        User user = userDao.get("email", email);
-        return user;
+        return userDao.get("email", email);
     }
 
     @Override
-    @Transactional
     public Long save(User entity) throws HibernateException {
-        Long generatedId = userDao.save(entity);
-        return generatedId;
+        return userDao.save(entity);
     }
 
     @Override
-    @Transactional
     public void update(User entity) throws HibernateException {
         userDao.update(entity);
     }
 
     @Override
-    @Transactional
     public void delete(User entity) throws HibernateException {
         userDao.delete(entity);
     }
 
     @Override
-    @Transactional
     public void addTest(Long userId, Test test) throws HibernateException {
         userDao.addTest(userId, test);
     }
 
     @Override
-    @Transactional
     public void addTest(String email, Test test) throws HibernateException {
         User user = userDao.get("email", email);
         Hibernate.initialize(user.getTests());
@@ -84,7 +71,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public List<Test> getTests(String userEmail) throws HibernateException {
         User user = userDao.get("email", userEmail);
         Hibernate.initialize(user.getTests());
@@ -92,7 +78,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public List<Test> getTests(Long userId) throws HibernateException {
         User user = userDao.getById(userId);
         Hibernate.initialize(user.getTests());
