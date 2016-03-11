@@ -24,7 +24,7 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public Test getById(Long id) throws HibernateException {
+    public Test getById(Integer id) throws HibernateException {
         return testDao.getById(id);
     }
 
@@ -34,7 +34,7 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public Long save(Test entity) throws HibernateException {
+    public Integer save(Test entity) throws HibernateException {
         return testDao.save(entity);
     }
 
@@ -49,7 +49,7 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public void setQuestions(Long testId, List<Question> questions) throws HibernateException {
+    public void setQuestions(Integer testId, List<Question> questions) throws HibernateException {
         testDao.setQuestions(testId, questions);
     }
 }

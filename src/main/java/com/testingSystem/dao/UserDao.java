@@ -1,6 +1,5 @@
 package com.testingSystem.dao;
 
-import com.testingSystem.entity.Test;
 import com.testingSystem.entity.User;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
@@ -59,12 +58,4 @@ public class UserDao implements EntityDao<User, Long> {
     public void delete(User entity) throws HibernateException {
         sessionFactory.getCurrentSession().delete(entity);
     }
-
-    public void addTest(Long userId, Test test) throws HibernateException {
-        User user = getById(userId);
-        user.getTests().add(test);
-        sessionFactory.getCurrentSession().update(user);
-    }
-
-
 }

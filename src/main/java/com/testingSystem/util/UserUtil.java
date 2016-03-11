@@ -1,14 +1,11 @@
 package com.testingSystem.util;
 
-import com.testingSystem.entity.Test;
 import com.testingSystem.entity.User;
 import com.testingSystem.exception.AuthException;
 import com.testingSystem.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Calendar;
 import java.util.regex.Pattern;
 
 @Service
@@ -33,14 +30,13 @@ public class UserUtil {
         return true;
     }
 
-    public Long createUser(String firstName, String lastName, String email) throws AuthException {
+    public User createUser(String firstName, String lastName, String email) throws AuthException {
         User user = userService.getByEmail(email);
         validateUserInfo(firstName, lastName, email, user);
         if (user == null) {
             user = new User(firstName, lastName, email);
-            user.getTests().add(new Test("TEST", Calendar.getInstance().getTime()));
-            return userService.save(user);
+            userService.save(user);
         }
-        return user.getId();
+        return user;
     }
 }

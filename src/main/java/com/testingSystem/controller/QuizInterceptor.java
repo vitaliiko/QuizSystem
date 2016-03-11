@@ -22,7 +22,7 @@ public class QuizInterceptor extends HandlerInterceptorAdapter {
         if (exclusion || req.getSession().getAttribute("userId") != null) {
             return true;
         } else {
-            resp.sendRedirect("/signIn");
+            resp.sendRedirect("/quiz/signIn");
         }
         return false;
     }

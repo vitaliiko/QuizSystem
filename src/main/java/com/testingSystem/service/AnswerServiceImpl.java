@@ -23,7 +23,7 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public Answer getById(Long id) throws HibernateException {
+    public Answer getById(Integer id) throws HibernateException {
         return answerDao.getById(id);
     }
 
@@ -33,7 +33,7 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public Long save(Answer entity) throws HibernateException {
+    public Integer save(Answer entity) throws HibernateException {
         return answerDao.save(entity);
     }
 

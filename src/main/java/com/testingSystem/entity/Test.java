@@ -1,7 +1,6 @@
 package com.testingSystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ public class Test {
     @Id
     @GeneratedValue
     @Column
-    private Long id;
+    private Integer id;
 
     @Column
     private String name;
@@ -31,11 +30,6 @@ public class Test {
             }
     )
     private List<Question> questions = new ArrayList<>();
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
     @Column
     private Integer points;
@@ -54,11 +48,11 @@ public class Test {
         this.date = date;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -76,14 +70,6 @@ public class Test {
 
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public Integer getPoints() {

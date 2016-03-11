@@ -7,7 +7,7 @@
 
     <script>
         function getQuestion() {
-            $.getJSON('/user/getQuestion', function(question) {
+            $.getJSON('/quiz/getQuestion', function(question) {
                 var result = "";
                 $('#questionText').text(question.questionText);
                 $.each(question.answers, function(index, value) {
@@ -18,21 +18,20 @@
         }
 
         $(document).ready(function() {
-           $('#sendAnswer').click(function() {
-               var userSelection = $("input[name='answer'][type='radio']:checked");
-               if (userSelection.length) {
-                   time = 30;
-                   $.ajax({
-                       url: '/user/setUserAnswer',
-                       data: userSelection.val(),
-                       type: 'POST',
-                       success: getQuestion()
-                   });
-               } else {
-                   alert("Please, select answer")
-               }
-
-           });
+            $('#sendAnswer').click(function() {
+                var userSelection = $("input[name='answer'][type='radio']:checked");
+                if (userSelection.length) {
+                    time = 30;
+                    $.ajax({
+                        url: '/quiz/setUserAnswer',
+                        data: userSelection.val(),
+                        type: 'POST',
+                        success: getQuestion()
+                    });
+                } else {
+                    alert("Please, select answer")
+                }
+            });
         });
 
         var time = 30;

@@ -24,7 +24,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Question getById(Long id) throws HibernateException {
+    public Question getById(Integer id) throws HibernateException {
         return questionDao.getById(id);
     }
 
@@ -34,7 +34,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Long save(Question entity) throws HibernateException {
+    public Integer save(Question entity) throws HibernateException {
         return questionDao.save(entity);
     }
 
@@ -49,12 +49,17 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public void setAnswers(Long questionId, List<Answer> answers) throws HibernateException {
+    public void setAnswers(Integer questionId, List<Answer> answers) throws HibernateException {
         questionDao.setAnswers(questionId, answers);
     }
 
     @Override
-    public void setText(Long questionId, String text) throws HibernateException {
+    public void setText(Integer questionId, String text) throws HibernateException {
         questionDao.setText(questionId, text);
+    }
+
+    @Override
+    public Long getQuestionCount() throws HibernateException {
+        return questionDao.getQuestionCount();
     }
 }

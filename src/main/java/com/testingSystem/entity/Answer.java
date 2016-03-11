@@ -1,15 +1,8 @@
 package com.testingSystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
@@ -19,7 +12,7 @@ public class Answer implements Serializable {
     @Id
     @GeneratedValue
     @Column
-    private Long id;
+    private Integer id;
 
     @Column
     private String text;
@@ -27,9 +20,9 @@ public class Answer implements Serializable {
     @Column
     private boolean isRight;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "question_id")
-    @JsonIgnore
     private Question question;
 
     public Answer() {
@@ -40,11 +33,11 @@ public class Answer implements Serializable {
         this.isRight = isRight;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

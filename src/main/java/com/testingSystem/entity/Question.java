@@ -1,8 +1,6 @@
 package com.testingSystem.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,12 +14,11 @@ public class Question implements Serializable {
     @Id
     @GeneratedValue
     @Column
-    private Long id;
+    private Integer id;
 
     @Column
     private String questionText;
 
-//    @JsonBackReference
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "question_id")
     private List<Answer> answers = new ArrayList<>();
@@ -46,11 +43,11 @@ public class Question implements Serializable {
         this.answers = answers;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

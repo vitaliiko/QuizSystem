@@ -1,11 +1,9 @@
 package com.testingSystem.service;
 
 import com.testingSystem.dao.UserDao;
-import com.testingSystem.entity.Test;
 import com.testingSystem.entity.User;
 import com.testingSystem.util.HibernateEntityInitializer;
 import com.testingSystem.util.HibernateSessionUtil;
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,32 +53,5 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(User entity) throws HibernateException {
         userDao.delete(entity);
-    }
-
-    @Override
-    public void addTest(Long userId, Test test) throws HibernateException {
-        userDao.addTest(userId, test);
-    }
-
-    @Override
-    public void addTest(String email, Test test) throws HibernateException {
-        User user = userDao.get("email", email);
-        Hibernate.initialize(user.getTests());
-        user.getTests().add(test);
-        userDao.update(user);
-    }
-
-    @Override
-    public List<Test> getTests(String userEmail) throws HibernateException {
-        User user = userDao.get("email", userEmail);
-        Hibernate.initialize(user.getTests());
-        return user.getTests();
-    }
-
-    @Override
-    public List<Test> getTests(Long userId) throws HibernateException {
-        User user = userDao.getById(userId);
-        Hibernate.initialize(user.getTests());
-        return user.getTests();
     }
 }

@@ -5,6 +5,7 @@ import com.testingSystem.entity.Question;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Repository
 @SuppressWarnings("unchecked")
-public class QuestionDao implements EntityDao<Question, Long> {
+public class QuestionDao implements EntityDao<Question, Integer> {
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -28,7 +29,7 @@ public class QuestionDao implements EntityDao<Question, Long> {
     }
 
     @Override
-    public Question getById(Long id) throws HibernateException {
+    public Question getById(Integer id) throws HibernateException {
         return (Question) sessionFactory.getCurrentSession()
                 .get(clazz, id);
     }
@@ -46,8 +47,8 @@ public class QuestionDao implements EntityDao<Question, Long> {
     }
 
     @Override
-    public Long save(Question entity) throws HibernateException {
-        return (Long) sessionFactory.getCurrentSession().save(entity);
+    public Integer save(Question entity) throws HibernateException {
+        return (Integer) sessionFactory.getCurrentSession().save(entity);
     }
 
     @Override
@@ -60,15 +61,24 @@ public class QuestionDao implements EntityDao<Question, Long> {
         sessionFactory.getCurrentSession().delete(entity);
     }
 
-    public void setAnswers(Long questionId, List<Answer> answers) throws HibernateException {
+    public void setAnswers(Integer questionId, List<Answer> answers) throws HibernateException {
         Question question = (Question) sessionFactory.getCurrentSession().get(Question.class, questionId);
         question.setAnswers(answers);
         sessionFactory.getCurrentSession().update(question);
     }
 
-    public void setText(Long questionId, String text) throws HibernateException {
+    public void setText(Integer questionId, String text) throws HibernateException {
         Question question = (Question) sessionFactory.getCurrentSession().get(Question.class, questionId);
         question.setQuestionText(text);
         sessionFactory.getCurrentSession().update(question);
     }
+
+    public Long getQuestionCount() throws HibernateException {
+        return (Long) sessionFactory.getCurrentSession()
+                .createCriteria(clazz)
+                .setProjection(Projections.rowCount())
+                .uniqueResult();
+    }
+
+
 }

@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public interface QuestionService extends EntityService<Question, Long> {
+public interface QuestionService extends EntityService<Question, Integer> {
 
-    void setAnswers(Long questionId, List<Answer> answers) throws HibernateException;
+    void setAnswers(Integer questionId, List<Answer> answers) throws HibernateException;
 
-    void setText(Long questionId, String text) throws HibernateException;
+    void setText(Integer questionId, String text) throws HibernateException;
+
+    Long getQuestionCount() throws HibernateException;
 }

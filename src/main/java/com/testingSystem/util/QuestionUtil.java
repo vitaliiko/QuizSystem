@@ -6,12 +6,12 @@ import com.testingSystem.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
-public class QuestionsUtil {
+public class QuestionUtil {
+
+    public static final int QUESTIONS_COUNT = 10;
 
     @Autowired private QuestionService questionService;
 
@@ -32,5 +32,24 @@ public class QuestionsUtil {
         }
         answers.add(new Answer(String.valueOf(random.nextDouble()), true));
         return answers;
+    }
+
+    public Set<Integer> getRandomQuestions(int count) {
+        Set<Integer> questionsIdSet = new HashSet<>();
+        List<Question> questionList = questionService.getAll("id");
+        while (questionsIdSet.size() < count) {
+            int randomIndex = (int) (Math.random() * questionList.size());
+            questionsIdSet.add(questionList.get(randomIndex).getId());
+        }
+        return questionsIdSet;
+    }
+
+    public Question getQuestion(Set<Integer> idSet) {
+        if (idSet.size() > 0) {
+            Integer questionId = idSet.stream().findFirst().get();
+            idSet.remove(questionId);
+            return questionService.getById(questionId);
+        }
+        return null;
     }
 }

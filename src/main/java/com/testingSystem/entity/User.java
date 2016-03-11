@@ -1,19 +1,7 @@
 package com.testingSystem.entity;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table
@@ -35,9 +23,14 @@ public class User {
     @Column
     private boolean admin;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "user_id")
-    private List<Test> tests = new ArrayList<>();
+    @Column
+    private Integer attempts = 0;
+
+    @Column
+    private Integer bestResult = 0;
+
+    @Column
+    private Date date;
 
     public User() {
     }
@@ -88,11 +81,27 @@ public class User {
         this.admin = admin;
     }
 
-    public List<Test> getTests() {
-        return tests;
+    public Integer getAttempts() {
+        return attempts;
     }
 
-    public void setTests(List<Test> tests) {
-        this.tests = tests;
+    public void setAttempts(Integer attempts) {
+        this.attempts = attempts;
+    }
+
+    public Integer getBestResult() {
+        return bestResult;
+    }
+
+    public void setBestResult(Integer bestResult) {
+        this.bestResult = bestResult;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

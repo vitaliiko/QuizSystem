@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 @SuppressWarnings("unchecked")
-public class AnswerDao implements EntityDao<Answer, Long> {
+public class AnswerDao implements EntityDao<Answer, Integer> {
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -27,7 +27,7 @@ public class AnswerDao implements EntityDao<Answer, Long> {
     }
 
     @Override
-    public Answer getById(Long id) throws HibernateException {
+    public Answer getById(Integer id) throws HibernateException {
         return (Answer) sessionFactory.getCurrentSession()
                 .get(clazz, id);
     }
@@ -45,8 +45,8 @@ public class AnswerDao implements EntityDao<Answer, Long> {
     }
 
     @Override
-    public Long save(Answer entity) throws HibernateException {
-        return (Long) sessionFactory.getCurrentSession().save(entity);
+    public Integer save(Answer entity) throws HibernateException {
+        return (Integer) sessionFactory.getCurrentSession().save(entity);
     }
 
     @Override

@@ -5,7 +5,7 @@
 </head>
 <body>
 <div>
-    <form action="/user/signIn" method="post">
+    <form action="/quiz/signIn" method="post">
         <h2>Please sign in</h2>
 
         <h3>${errorMessage}</h3>
@@ -22,7 +22,7 @@
         <button type="submit">Sign in</button>
     </form>
 
-    <form action="/user/signIn" method="post">
+    <form action="/quiz/signIn" method="post">
         <input type="hidden" name="firstName" value="Vasyl">
         <input type="hidden" name="lastName" value="Ivanov">
         <input type="hidden" name="email" value="vasyl.ivanov@gmail.com">
