@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -67,14 +68,23 @@ public class QuizController {
     }
 
     @RequestMapping(value = "/getQuestion")
-    public Question getQuestion(HttpSession session) throws HibernateException {
+    public Question getQuestion(String answer, Integer questionId, HttpSession session) throws HibernateException {
         Set<Integer> idSet = (Set<Integer>) session.getAttribute("questions");
+        Map<Integer, String> userAnswers = (Map<Integer, String>) session.getAttribute("userAnswers");
+        userAnswers.put(questionId, answer);
+        System.out.println("USER ANSWERS");
+        userAnswers.forEach((id, a) -> System.out.println(id + " : " + a));
         if (idSet.size() > 0) {
-            Integer questionId = idSet.stream().findFirst().get();
-            idSet.remove(questionId);
-            return questionService.getById(questionId);
+            Integer generatedQuestionId = idSet.stream().findFirst().get();
+            idSet.remove(generatedQuestionId);
+            return questionService.getById(generatedQuestionId);
         }
         return null;
+    }
+
+    @RequestMapping("/getMaxQuestionsCount")
+    public Integer getQuestionsCount() {
+        return QuestionUtil.QUESTIONS_COUNT;
     }
 
     @RequestMapping(value = "/addQuestion", method = RequestMethod.GET)

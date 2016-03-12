@@ -6,10 +6,23 @@
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js" ></script>
 
     <script>
-        function getQuestion() {
-            $.getJSON('/quiz/getQuestion', function(question) {
+        var questionId;
+        var questionsMax;
+        var questionsCounter = 1;
+        var time = 30;
+
+        function getMaxQuestionsCount() {
+            $.get('/quiz/getMaxQuestionsCount', function(count) {
+                questionsMax = count;
+                $('#counter').text('1 of ' + questionsMax);
+            });
+        }
+
+        function getQuestion(answer) {
+            $.getJSON('/quiz/getQuestion', {answer:answer, questionId:questionId}, function(question) {
                 var result = "";
                 $('#questionText').text(question.questionText);
+                questionId = question.id;
                 $.each(question.answers, function(index, value) {
                     result += "<p><input type='radio' name='answer' value=" + value.text + ">" + value.text + "</p>";
                 });
@@ -20,25 +33,37 @@
         $(document).ready(function() {
             $('#sendAnswer').click(function() {
                 var userSelection = $("input[name='answer'][type='radio']:checked");
+                if (!checkQuestionsCount()) {
+                    return;
+                }
                 if (userSelection.length) {
                     time = 30;
-                    $.ajax({
-                        url: '/quiz/setUserAnswer',
-                        data: userSelection.val(),
-                        type: 'POST',
-                        success: getQuestion()
-                    });
+                    getQuestion(userSelection.val());
                 } else {
-                    alert("Please, select answer")
+                    alert("Please, select answer");
                 }
+
             });
         });
 
-        var time = 30;
+        function checkQuestionsCount() {
+            $('#counter').text(++questionsCounter + ' of 10');
+            if (questionsCounter == 10) {
+                $('#sendAnswer').val('Done');
+                questionsCounter = 1;
+                return false;
+            }
+            return true;
+        }
+
         setInterval(function() {
             $('#timer').text((time < 10 ? '00:0' : '00:') + time);
             if (time == 0) {
-                getQuestion();
+                if (checkQuestionsCount()) {
+                    getQuestion();
+                } else {
+                    return;
+                }
                 time = 30;
             }
             time--;
@@ -47,13 +72,12 @@
 
 </head>
 
-<body onload="getQuestion();">
+<body onload="getQuestion(); getMaxQuestionsCount();">
     <form id="questionForm">
         <div align="center">
-            <div id="timer">00:30</div>
-            Question:
+            <p id="timer">00:30</p>
+            <p id="counter"></p>
             <p id="questionText"></p>
-            <br>
             <form id="answersForm">
                 <div id="answersDiv"></div>
                 <input id="sendAnswer" type="button" value="next">

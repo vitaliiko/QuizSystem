@@ -18,7 +18,7 @@ public class QuestionUtil {
 
     public void createQuestions() throws HibernateException {
         List<Question> questions = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 30; i++) {
             questions.add(new Question("question" + i, createAnswers()));
         }
         questions.forEach(questionService::save);
