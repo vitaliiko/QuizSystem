@@ -3,6 +3,7 @@ package com.testingSystem.util;
 import com.testingSystem.entity.Answer;
 import com.testingSystem.entity.Question;
 import com.testingSystem.service.QuestionService;
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ public class QuestionUtil {
 
     @Autowired private QuestionService questionService;
 
-    public void createQuestions() {
+    public void createQuestions() throws HibernateException {
         List<Question> questions = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             questions.add(new Question("question" + i, createAnswers()));
@@ -34,7 +35,7 @@ public class QuestionUtil {
         return answers;
     }
 
-    public Set<Integer> getRandomQuestions(int count) {
+    public Set<Integer> getRandomQuestions(int count) throws HibernateException {
         Set<Integer> questionsIdSet = new HashSet<>();
         List<Question> questionList = questionService.getAll("id");
         while (questionsIdSet.size() < count) {
@@ -44,7 +45,7 @@ public class QuestionUtil {
         return questionsIdSet;
     }
 
-    public Question getQuestion(Set<Integer> idSet) {
+    public Question getQuestion(Set<Integer> idSet) throws HibernateException {
         if (idSet.size() > 0) {
             Integer questionId = idSet.stream().findFirst().get();
             idSet.remove(questionId);

@@ -8,6 +8,7 @@ import com.testingSystem.service.QuestionService;
 import com.testingSystem.service.UserService;
 import com.testingSystem.util.QuestionUtil;
 import com.testingSystem.util.UserUtil;
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,9 @@ public class QuizController {
     }
 
 	@RequestMapping(value = "/signIn", method = RequestMethod.POST)
-    public ModelAndView signIn(String firstName, String lastName, String email, HttpSession session) throws AuthException {
+    public ModelAndView signIn(String firstName, String lastName, String email, HttpSession session)
+            throws AuthException, HibernateException {
+
         User user = userUtil.createUser(firstName, lastName, email);
         session.setAttribute("userId", user.getId());
 
@@ -47,7 +50,7 @@ public class QuizController {
     }
 
     @RequestMapping(value = "/startTest", method = RequestMethod.GET)
-    public ModelAndView startTest(HttpSession session) {
+    public ModelAndView startTest(HttpSession session) throws HibernateException {
         ModelAndView model = new ModelAndView("makeTest");
         session.setAttribute("questions", questionUtil.getRandomQuestions(QuestionUtil.QUESTIONS_COUNT));
         session.setAttribute("userAnswers", new HashMap<>());
@@ -64,7 +67,7 @@ public class QuizController {
     }
 
     @RequestMapping(value = "/getQuestion")
-    public Question getQuestion(HttpSession session) {
+    public Question getQuestion(HttpSession session) throws HibernateException {
         Set<Integer> idSet = (Set<Integer>) session.getAttribute("questions");
         if (idSet.size() > 0) {
             Integer questionId = idSet.stream().findFirst().get();
@@ -85,14 +88,14 @@ public class QuizController {
     }
 
     @RequestMapping("/createQuestions")
-    public ModelAndView createQuestions() {
+    public ModelAndView createQuestions() throws HibernateException {
         ModelAndView model = new ModelAndView("home");
         questionUtil.createQuestions();
         return model;
     }
 
     @RequestMapping("/printQuestion")
-    public ModelAndView question() {
+    public ModelAndView question() throws HibernateException {
         ModelAndView model = new ModelAndView("printQuestion");
         Question question = questionService.getById(1);
         model.addObject("question", question);
@@ -103,6 +106,13 @@ public class QuizController {
     public ModelAndView authExceptionHandler(AuthException e) {
         ModelAndView model = new ModelAndView("signIn");
         model.addObject("errorMessage", e.getMessage());
+        return model;
+    }
+
+    @ExceptionHandler(HibernateException.class)
+    public ModelAndView hibernateExceptionHandler(HibernateException e) {
+        ModelAndView model = new ModelAndView("errorPages/errorPage");
+        model.addObject("errorMessage", "Data base doesn't respond");
         return model;
     }
 
