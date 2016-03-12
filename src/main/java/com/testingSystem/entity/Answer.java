@@ -17,9 +17,6 @@ public class Answer implements Serializable {
     @Column
     private String text;
 
-    @Column
-    private boolean isRight;
-
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "question_id")
@@ -28,9 +25,8 @@ public class Answer implements Serializable {
     public Answer() {
     }
 
-    public Answer(String text, boolean isRight) {
+    public Answer(String text) {
         this.text = text;
-        this.isRight = isRight;
     }
 
     public Integer getId() {
@@ -47,14 +43,6 @@ public class Answer implements Serializable {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public boolean isRight() {
-        return isRight;
-    }
-
-    public void setRight(boolean right) {
-        isRight = right;
     }
 
     public Question getQuestion() {

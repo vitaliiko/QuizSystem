@@ -29,9 +29,9 @@ public class QuestionUtil {
         Random random = new Random();
         int answCount = random.nextInt(4) + 1;
         for (int i = 0; i < answCount; i++) {
-            answers.add(new Answer(String.valueOf(random.nextDouble()), false));
+            answers.add(new Answer(String.valueOf(random.nextDouble())));
         }
-        answers.add(new Answer(String.valueOf(random.nextDouble()), true));
+        answers.add(new Answer(String.valueOf(random.nextDouble())));
         return answers;
     }
 
@@ -47,10 +47,19 @@ public class QuestionUtil {
 
     public Question getQuestion(Set<Integer> idSet) throws HibernateException {
         if (idSet.size() > 0) {
-            Integer questionId = idSet.stream().findFirst().get();
-            idSet.remove(questionId);
-            return questionService.getById(questionId);
+            Integer generatedQuestionId = idSet.stream().findFirst().get();
+            idSet.remove(generatedQuestionId);
+            return questionService.getById(generatedQuestionId);
         }
         return null;
+    }
+
+    public int countRightAnswers(Map<Integer, String> userAnswers) {
+        final int[] answersCount = {0};
+        userAnswers.forEach((questionId, answer) -> {
+            if (questionService.getById(questionId).getRightAnswer().getText().equals(answer)) {
+                answersCount[0]++;
+            }
+        });
     }
 }

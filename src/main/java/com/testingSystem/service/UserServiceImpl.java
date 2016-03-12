@@ -2,8 +2,6 @@ package com.testingSystem.service;
 
 import com.testingSystem.dao.UserDao;
 import com.testingSystem.entity.User;
-import com.testingSystem.util.HibernateEntityInitializer;
-import com.testingSystem.util.HibernateSessionUtil;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +15,6 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     @Autowired private UserDao userDao;
-    @Autowired private HibernateSessionUtil sessionUtil;
-    @Autowired private HibernateEntityInitializer entityInitializer;
 
     @Override
     public List<User> getAll(String orderParameter) throws HibernateException {
@@ -53,5 +49,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(User entity) throws HibernateException {
         userDao.delete(entity);
+    }
+
+    @Override
+    public void addAttempt(Long userId) throws HibernateException {
+        userDao.addAttempt(userId);
     }
 }

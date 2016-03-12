@@ -8,4 +8,6 @@ import org.springframework.stereotype.Service;
 public interface UserService extends EntityService<User, Long> {
 
     User getByEmail(String email) throws HibernateException;
+
+    void addAttempt(Long userId) throws HibernateException;
 }

@@ -37,6 +37,8 @@
         }
 
         $(document).ready(function() {
+            getQuestion();
+            getMaxQuestionsCount();
             $('#sendAnswer').click(function() {
                 var userSelection = $("input[name='answer'][type='radio']:checked");
                 if (!checkQuestionsCount()) {
@@ -78,7 +80,7 @@
 
 </head>
 
-<body onload="getQuestion(); getMaxQuestionsCount();">
+<body>
     <form id="questionForm">
         <div align="center">
             <p id="timer">00:30</p>

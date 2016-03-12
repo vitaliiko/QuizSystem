@@ -3,6 +3,7 @@ package com.testingSystem.controller;
 import com.testingSystem.entity.Question;
 import com.testingSystem.entity.User;
 import com.testingSystem.exception.AuthException;
+import com.testingSystem.model.Result;
 import com.testingSystem.service.AnswerService;
 import com.testingSystem.service.QuestionService;
 import com.testingSystem.service.UserService;
@@ -55,36 +56,33 @@ public class QuizController {
         ModelAndView model = new ModelAndView("makeTest");
         session.setAttribute("questions", questionUtil.getRandomQuestions(QuestionUtil.QUESTIONS_COUNT));
         session.setAttribute("userAnswers", new HashMap<>());
+        userService.addAttempt((Long) session.getAttribute("userId"));
         return model;
-    }
-
-    @RequestMapping(value = "/setUserAnswer", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
-    public void setUserAnswer(@RequestBody String answer, HttpSession session) {
-        List<String> answerList = ((List<String>) session.getAttribute("userAnswers"));
-        answerList.add(answer);
-        System.out.println("ANSWERS : ");
-        answerList.forEach(System.out::println);
     }
 
     @RequestMapping(value = "/getQuestion")
     public Question getQuestion(String answer, Integer questionId, HttpSession session) throws HibernateException {
         Set<Integer> idSet = (Set<Integer>) session.getAttribute("questions");
         Map<Integer, String> userAnswers = (Map<Integer, String>) session.getAttribute("userAnswers");
-        userAnswers.put(questionId, answer);
-        System.out.println("USER ANSWERS");
-        userAnswers.forEach((id, a) -> System.out.println(id + " : " + a));
-        if (idSet.size() > 0) {
-            Integer generatedQuestionId = idSet.stream().findFirst().get();
-            idSet.remove(generatedQuestionId);
-            return questionService.getById(generatedQuestionId);
+        if (questionId != null) {
+            userAnswers.put(questionId, answer);
         }
-        return null;
+        return questionUtil.getQuestion(idSet);
     }
 
     @RequestMapping("/getMaxQuestionsCount")
     public Integer getQuestionsCount() {
         return QuestionUtil.QUESTIONS_COUNT;
+    }
+
+    @RequestMapping("/getResult")
+    public Result getResult(HttpSession session) {
+        Result result = new Result();
+        User user = userService.getById((Long) session.getAttribute("userId"));
+
+        result.setQuestionsCount(QuestionUtil.QUESTIONS_COUNT);
+        result.setAttempts(user.getAttempts());
+        result.setRightAnswers();
     }
 
     @RequestMapping(value = "/addQuestion", method = RequestMethod.GET)

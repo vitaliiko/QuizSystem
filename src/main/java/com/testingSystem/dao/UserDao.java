@@ -58,4 +58,10 @@ public class UserDao implements EntityDao<User, Long> {
     public void delete(User entity) throws HibernateException {
         sessionFactory.getCurrentSession().delete(entity);
     }
+
+    public void addAttempt(Long id) throws HibernateException {
+        User user = (User) sessionFactory.getCurrentSession().get(clazz, id);
+        user.setAttempts(user.getAttempts() + 1);
+        sessionFactory.getCurrentSession().update(user);
+    }
 }

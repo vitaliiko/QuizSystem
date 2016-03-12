@@ -23,6 +23,10 @@ public class Question implements Serializable {
     @JoinColumn(name = "question_id")
     private List<Answer> answers = new ArrayList<>();
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "answer_id")
+    private Answer rightAnswer;
+
     @JsonIgnore
     @ManyToMany
     @JoinTable(name = "testToQuestionRelation",
@@ -65,6 +69,14 @@ public class Question implements Serializable {
 
     public void setAnswers(List<Answer> answers) {
         this.answers = answers;
+    }
+
+    public Answer getRightAnswer() {
+        return rightAnswer;
+    }
+
+    public void setRightAnswer(Answer rightAnswer) {
+        this.rightAnswer = rightAnswer;
     }
 
     public List<Test> getTests() {
