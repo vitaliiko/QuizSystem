@@ -13,20 +13,21 @@ import java.util.*;
 public class QuestionUtil {
 
     public static final int QUESTIONS_COUNT = 10;
+    private Random random = new Random();
 
     @Autowired private QuestionService questionService;
 
     public void createQuestions() throws HibernateException {
         List<Question> questions = new ArrayList<>();
         for (int i = 0; i < 30; i++) {
-            questions.add(new Question("question" + i, createAnswers()));
+            List<Answer> answers = createAnswers();
+            questions.add(new Question("question" + i, answers, answers.get(random.nextInt(answers.size()))));
         }
         questions.forEach(questionService::save);
     }
 
     private List<Answer> createAnswers() {
         List<Answer> answers = new ArrayList<>();
-        Random random = new Random();
         int answCount = random.nextInt(4) + 1;
         for (int i = 0; i < answCount; i++) {
             answers.add(new Answer(String.valueOf(random.nextDouble())));
@@ -52,14 +53,5 @@ public class QuestionUtil {
             return questionService.getById(generatedQuestionId);
         }
         return null;
-    }
-
-    public int countRightAnswers(Map<Integer, String> userAnswers) {
-        final int[] answersCount = {0};
-        userAnswers.forEach((questionId, answer) -> {
-            if (questionService.getById(questionId).getRightAnswer().getText().equals(answer)) {
-                answersCount[0]++;
-            }
-        });
     }
 }

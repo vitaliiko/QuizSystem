@@ -42,9 +42,10 @@ public class Question implements Serializable {
     public Question() {
     }
 
-    public Question(String questionText, List<Answer> answers) {
+    public Question(String questionText, List<Answer> answers, Answer rightAnswer) {
         this.questionText = questionText;
         this.answers = answers;
+        this.rightAnswer = rightAnswer;
     }
 
     public Integer getId() {

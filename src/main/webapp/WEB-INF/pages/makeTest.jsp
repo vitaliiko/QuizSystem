@@ -9,7 +9,7 @@
     <%--<spring:url value="/resources/jquery.js" var="jquery.js"/>--%>
     <%--<script src="${jquery.js}"></script>--%>
 
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js" ></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 
     <script>
         var questionId;
@@ -25,7 +25,7 @@
         }
 
         function getQuestion(answer) {
-            $.getJSON('/quiz/getQuestion', {answer:answer, questionId:questionId}, function(question) {
+            $.getJSON('/quiz/getQuestion', {answer : answer, questionId : questionId}, function(question) {
                 var result = "";
                 $('#questionText').text(question.questionText);
                 questionId = question.id;
@@ -36,32 +36,44 @@
             });
         }
 
+        function getResult() {
+            $.getJSON('/quiz/getResult', function (result) {
+                $('#questionDiv').hide();
+                $('#resultDiv').show();
+                $('#spentTime').text('Spent time: ' + result.spentTime);
+                $('#rightAnswers').text('Right answers: ' + result.rightAnswers + '/' + result.questionsCount);
+                $('#points').text('Result: ' + result.result);
+                $('#attempts').text('Attempts: ' + result.attempts);
+                $('#messageText').text(result.messageText);
+            })
+        }
+
         $(document).ready(function() {
             getQuestion();
             getMaxQuestionsCount();
+            $('#questionDiv').show();
+            $('#resultDiv').hide();
             $('#sendAnswer').click(function() {
                 var userSelection = $("input[name='answer'][type='radio']:checked");
-                if (!checkQuestionsCount()) {
-                    return;
-                }
                 if (userSelection.length) {
+                    $('#messageText').text('');
+                    if (!checkQuestionsCount()) {
+                        getResult();
+                    }
                     time = 30;
                     getQuestion(userSelection.val());
                 } else {
-                    alert("Please, select answer");
+                    $('#messageText').text('Please, select answer');
                 }
-
             });
         });
 
         function checkQuestionsCount() {
             $('#counter').text(++questionsCounter + ' of 10');
-            if (questionsCounter == 10) {
+            if (questionsCounter == 9) {
                 $('#sendAnswer').val('Done');
-                questionsCounter = 1;
-                return false;
             }
-            return true;
+            return questionsCounter != 10;
         }
 
         setInterval(function() {
@@ -70,7 +82,7 @@
                 if (checkQuestionsCount()) {
                     getQuestion();
                 } else {
-                    return;
+                    getResult();
                 }
                 time = 30;
             }
@@ -81,18 +93,26 @@
 </head>
 
 <body>
-    <form id="questionForm">
-        <div align="center">
-            <p id="timer">00:30</p>
-            <p id="counter"></p>
-            <p id="questionText"></p>
-            <form id="answersForm">
-                <div id="answersDiv"></div>
-                <input id="sendAnswer" type="button" value="next">
-            </form>
+    <div id="messageDiv" align="center">
+        <p id="messageText"></p>
+    </div>
 
+    <div id="questionDiv" align="center">
+        <p id="timer">00:30</p>
+        <p id="counter"></p>
+        <p id="questionText"></p>
+        <div id="answersForm">
+            <div id="answersDiv"></div>
+            <input id="sendAnswer" type="button" value="next">
         </div>
-    </form>
+    </div>
 
+    <div id="resultDiv" align="center">
+        <p id="rightAnswers"></p>
+        <p id="points"></p>
+        <p id="spentTime"></p>
+        <p id="attempts"></p>
+        <input type="button" id="tryAgainButton" value="Try Again"/>
+    </div>
 </body>
 </html>

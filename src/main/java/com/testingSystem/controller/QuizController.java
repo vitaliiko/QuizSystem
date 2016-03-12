@@ -8,16 +8,15 @@ import com.testingSystem.service.AnswerService;
 import com.testingSystem.service.QuestionService;
 import com.testingSystem.service.UserService;
 import com.testingSystem.util.QuestionUtil;
+import com.testingSystem.util.TestUtil;
 import com.testingSystem.util.UserUtil;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,6 +30,7 @@ public class QuizController {
     @Autowired private QuestionUtil questionUtil;
     @Autowired private QuestionService questionService;
     @Autowired private AnswerService answerService;
+    @Autowired private TestUtil testUtil;
 
     @RequestMapping(value = "/signIn", method = RequestMethod.GET)
     public ModelAndView signIn() {
@@ -56,6 +56,7 @@ public class QuizController {
         ModelAndView model = new ModelAndView("makeTest");
         session.setAttribute("questions", questionUtil.getRandomQuestions(QuestionUtil.QUESTIONS_COUNT));
         session.setAttribute("userAnswers", new HashMap<>());
+        session.setAttribute("time", System.currentTimeMillis());
         userService.addAttempt((Long) session.getAttribute("userId"));
         return model;
     }
@@ -70,6 +71,11 @@ public class QuizController {
         return questionUtil.getQuestion(idSet);
     }
 
+    @RequestMapping(value = "/getQuestion/{questionId}")
+    public Question getQuestion(@PathVariable Integer questionId) throws HibernateException {
+        return questionService.getById(questionId);
+    }
+
     @RequestMapping("/getMaxQuestionsCount")
     public Integer getQuestionsCount() {
         return QuestionUtil.QUESTIONS_COUNT;
@@ -77,12 +83,12 @@ public class QuizController {
 
     @RequestMapping("/getResult")
     public Result getResult(HttpSession session) {
-        Result result = new Result();
         User user = userService.getById((Long) session.getAttribute("userId"));
-
-        result.setQuestionsCount(QuestionUtil.QUESTIONS_COUNT);
-        result.setAttempts(user.getAttempts());
-        result.setRightAnswers();
+        int rightAnswersCount = testUtil.countRightAnswers((Map<Integer, String>) session.getAttribute("userAnswers"));
+        int spentTime = testUtil.countSpentTime((Long) session.getAttribute("time"));
+        float result = testUtil.countResult(QuestionUtil.QUESTIONS_COUNT, rightAnswersCount);
+        String message = testUtil.generateMessage(result);
+        return new Result(spentTime, QuestionUtil.QUESTIONS_COUNT, rightAnswersCount, result, user.getAttempts(), message);
     }
 
     @RequestMapping(value = "/addQuestion", method = RequestMethod.GET)

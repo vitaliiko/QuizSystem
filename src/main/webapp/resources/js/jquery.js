@@ -11,7 +11,7 @@ function getMaxQuestionsCount() {
 }
 
 function getQuestion(answer) {
-    $.getJSON('/quiz/getQuestion', {answer:answer, questionId:questionId}, function(question) {
+    $.getJSON('/quiz/getQuestion', {answer : answer, questionId : questionId}, function(question) {
         var result = "";
         $('#questionText').text(question.questionText);
         questionId = question.id;
@@ -22,30 +22,44 @@ function getQuestion(answer) {
     });
 }
 
+function getResult() {
+    $.getJSON('/quiz/getResult', function (result) {
+        $('#questionDiv').hide();
+        $('#resultDiv').show();
+        $('#spentTime').text('Spent time: ' + result.spentTime);
+        $('#rightAnswers').text('Right answers: ' + result.rightAnswers + '/' + result.questionsCount);
+        $('#points').text('Result: ' + result.result);
+        $('#attempts').text('Attempts: ' + result.attempts);
+        $('#messageText').text(result.messageText);
+    })
+}
+
 $(document).ready(function() {
+    getQuestion();
+    getMaxQuestionsCount();
+    $('#questionDiv').show();
+    $('#resultDiv').hide();
     $('#sendAnswer').click(function() {
         var userSelection = $("input[name='answer'][type='radio']:checked");
-        if (!checkQuestionsCount()) {
-            return;
-        }
         if (userSelection.length) {
+            $('#messageText').text('');
+            if (!checkQuestionsCount()) {
+                getResult();
+            }
             time = 30;
             getQuestion(userSelection.val());
         } else {
-            alert("Please, select answer");
+            $('#messageText').text('Please, select answer');
         }
-
     });
 });
 
 function checkQuestionsCount() {
     $('#counter').text(++questionsCounter + ' of 10');
-    if (questionsCounter == 10) {
+    if (questionsCounter == 9) {
         $('#sendAnswer').val('Done');
-        questionsCounter = 1;
-        return false;
     }
-    return true;
+    return questionsCounter != 10;
 }
 
 setInterval(function() {
@@ -54,7 +68,7 @@ setInterval(function() {
         if (checkQuestionsCount()) {
             getQuestion();
         } else {
-            return;
+            getResult();
         }
         time = 30;
     }
