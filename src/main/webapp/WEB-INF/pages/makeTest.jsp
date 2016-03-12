@@ -1,8 +1,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>AJAX</title>
+
+    <%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>--%>
+    <%--<spring:url value="/resources/jquery.js" var="jquery.js"/>--%>
+    <%--<script src="${jquery.js}"></script>--%>
+
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js" ></script>
 
     <script>
