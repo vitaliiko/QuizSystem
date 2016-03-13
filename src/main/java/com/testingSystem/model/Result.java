@@ -5,18 +5,18 @@ public class Result {
     private String spentTime;
     private int questionsCount;
     private int rightAnswers;
-    private float result;
+    private float points;
     private int attempts;
     private String messageText;
 
     public Result() {
     }
 
-    public Result(String spentTime, int questionsCount, int rightAnswers, float result, int attempts, String messageText) {
+    public Result(String spentTime, int questionsCount, int rightAnswers, float points, int attempts, String messageText) {
         this.spentTime = spentTime;
         this.questionsCount = questionsCount;
         this.rightAnswers = rightAnswers;
-        this.result = result;
+        this.points = points;
         this.attempts = attempts;
         this.messageText = messageText;
     }
@@ -45,12 +45,12 @@ public class Result {
         this.rightAnswers = rightAnswers;
     }
 
-    public float getResult() {
-        return result;
+    public float getPoints() {
+        return points;
     }
 
-    public void setResult(float result) {
-        this.result = result;
+    public void setPoints(float points) {
+        this.points = points;
     }
 
     public int getAttempts() {

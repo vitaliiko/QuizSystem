@@ -11,7 +11,7 @@
                 <h3>Hello, ${user.firstName} ${user.lastName}</h3>
                 <p>Questions in test: ${questionsCount}</p>
                 <p>Attempts count: ${user.attempts}</p>
-                <p>Best result: ${user.bestResult}</p>
+                <p>Best points: ${user.bestResult}</p>
                 <p>Last attempt: <fmt:formatDate type="date" value="${user.date}"/></p>
                 <input type="submit" value="Start Test">
                 <br><br>
