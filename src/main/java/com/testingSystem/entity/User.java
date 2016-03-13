@@ -104,4 +104,31 @@ public class User {
     public void setDate(Date date) {
         this.date = date;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (admin != user.admin) return false;
+        if (id != null ? !id.equals(user.id) : user.id != null) return false;
+        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
+        return !(lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) && !(email != null ? !email.equals(user.email) : user.email != null) && !(attempts != null ? !attempts.equals(user.attempts) : user.attempts != null) && !(bestResult != null ? !bestResult.equals(user.bestResult) : user.bestResult != null) && !(date != null ? !date.equals(user.date) : user.date != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (admin ? 1 : 0);
+        result = 31 * result + (attempts != null ? attempts.hashCode() : 0);
+        result = 31 * result + (bestResult != null ? bestResult.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        return result;
+    }
 }

@@ -2,6 +2,8 @@ package com.testingSystem.util;
 
 import com.testingSystem.entity.Answer;
 import com.testingSystem.entity.Question;
+import com.testingSystem.exception.WrongFormatException;
+import com.testingSystem.model.QuestionModel;
 import com.testingSystem.service.QuestionService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,33 @@ public class QuestionUtil {
             questions.add(new Question("question" + i, answers, answers.get(random.nextInt(answers.size()))));
         }
         questions.forEach(questionService::save);
+    }
+
+    public void createQuestion(QuestionModel questionModel) throws WrongFormatException {
+        String questionText = questionModel.getQuestion();
+        if (questionText.isEmpty()) {
+            throw new WrongFormatException("Question text doesn't exist");
+        }
+        List<Answer> answers = new ArrayList<>();
+        for (String a : questionModel.getAnswers()) {
+            Answer answer = new Answer(a);
+            if (answers.contains(answer)) {
+                throw new WrongFormatException("Duplicate answers detected");
+            }
+            answers.add(answer);
+        }
+        Arrays.stream(questionModel.getAnswers())
+                .filter(a -> !a.isEmpty())
+                .forEach(a -> answers.add(new Answer(a)));
+        if (answers.size() < 2) {
+            throw new WrongFormatException("Answers count less then 2");
+        }
+        Answer rightAnswer = answers.get(questionModel.getRightAnswer());
+        if (rightAnswer == null) {
+            throw new WrongFormatException("Right answer doesn't exist");
+        }
+        Question question = new Question(questionText, answers, rightAnswer);
+        questionService.save(question);
     }
 
     private List<Answer> createAnswers() {

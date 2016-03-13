@@ -87,4 +87,31 @@ public class Question implements Serializable {
     public void setTests(List<Test> tests) {
         this.tests = tests;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Question question = (Question) o;
+
+        if (id != null ? !id.equals(question.id) : question.id != null) return false;
+        if (questionText != null ? !questionText.equals(question.questionText) : question.questionText != null)
+            return false;
+        if (answers != null ? !answers.equals(question.answers) : question.answers != null) return false;
+        if (rightAnswer != null ? !rightAnswer.equals(question.rightAnswer) : question.rightAnswer != null)
+            return false;
+        return !(tests != null ? !tests.equals(question.tests) : question.tests != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (questionText != null ? questionText.hashCode() : 0);
+        result = 31 * result + (answers != null ? answers.hashCode() : 0);
+        result = 31 * result + (rightAnswer != null ? rightAnswer.hashCode() : 0);
+        result = 31 * result + (tests != null ? tests.hashCode() : 0);
+        return result;
+    }
 }
