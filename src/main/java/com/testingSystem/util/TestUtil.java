@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class TestUtil {
@@ -21,9 +22,12 @@ public class TestUtil {
         return answersCount[0];
     }
 
-    public int countSpentTime(long startTime) {
+    public String countSpentTime(long startTime) {
         long currentTime = System.currentTimeMillis();
-        return (int) ((currentTime - startTime) / 60 * 1000);
+        long spentTime = Math.abs(currentTime - startTime);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(spentTime);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(spentTime) - minutes * 60;
+        return minutes + " minutes, " + seconds + " seconds";
     }
 
     public float countResult(int questionsCount, int rightAnswers) {

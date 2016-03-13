@@ -15,12 +15,17 @@
         var questionId;
         var questionsMax;
         var questionsCounter = 1;
-        var time = 30;
+        var time;
+        var timeLimit;
+        var intervalId;
 
-        function getMaxQuestionsCount() {
-            $.get('/quiz/getMaxQuestionsCount', function(count) {
-                questionsMax = count;
+        function getLimits() {
+            $.get('/quiz/getLimits', function(limits) {
+                questionsMax = limits[0];
                 $('#counter').text('1 of ' + questionsMax);
+                alert(limits[1]);
+                timeLimit = limits[1];
+                $('#timer').text('00:' + time);
             });
         }
 
@@ -48,46 +53,64 @@
             })
         }
 
-        $(document).ready(function() {
+        function prepareQuiz() {
             getQuestion();
-            getMaxQuestionsCount();
+            getLimits();
+            startTimer();
             $('#questionDiv').show();
             $('#resultDiv').hide();
+        }
+
+        $(document).ready(function() {
+            prepareQuiz();
+
             $('#sendAnswer').click(function() {
                 var userSelection = $("input[name='answer'][type='radio']:checked");
                 if (userSelection.length) {
                     $('#messageText').text('');
                     if (!checkQuestionsCount()) {
                         getResult();
+                        clearInterval(intervalId);
                     }
-                    time = 30;
+                    time = timeLimit;
                     getQuestion(userSelection.val());
                 } else {
                     $('#messageText').text('Please, select answer');
                 }
             });
+
+            $('#tryAgain').click(function () {
+                prepareQuiz();
+            });
         });
 
         function checkQuestionsCount() {
-            $('#counter').text(++questionsCounter + ' of 10');
-            if (questionsCounter == 9) {
+            if (questionsCounter == questionsMax) {
+                return false;
+            }
+            $('#counter').text(++questionsCounter + ' of ' + questionsMax);
+            if (questionsCounter == questionsMax) {
                 $('#sendAnswer').val('Done');
             }
-            return questionsCounter != 10;
+            return true;
         }
 
-        setInterval(function() {
-            $('#timer').text((time < 10 ? '00:0' : '00:') + time);
-            if (time == 0) {
-                if (checkQuestionsCount()) {
-                    getQuestion();
-                } else {
-                    getResult();
+        function startTimer() {
+            alert(timeLimit);
+            time = timeLimit;
+            intervalId = setInterval(function () {
+                $('#timer').text((time < 10 ? '00:0' : '00:') + time);
+                if (time == 0) {
+                    if (checkQuestionsCount()) {
+                        getQuestion();
+                    } else {
+                        getResult();
+                    }
+                    time = timeLimit;
                 }
-                time = 30;
-            }
-            time--;
-        }, 1000);
+                time--;
+            }, 1000);
+        }
     </script>
 
 </head>
@@ -98,7 +121,7 @@
     </div>
 
     <div id="questionDiv" align="center">
-        <p id="timer">00:30</p>
+        <p id="timer"></p>
         <p id="counter"></p>
         <p id="questionText"></p>
         <div id="answersForm">
@@ -112,7 +135,7 @@
         <p id="points"></p>
         <p id="spentTime"></p>
         <p id="attempts"></p>
-        <input type="button" id="tryAgainButton" value="Try Again"/>
+        <input type="button" id="tryAgain" value="Try Again"/>
     </div>
 </body>
 </html>

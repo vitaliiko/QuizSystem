@@ -8,6 +8,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Calendar;
 import java.util.List;
 
 @Repository
@@ -23,6 +24,15 @@ public class UserDao implements EntityDao<User, Long> {
         return (List<User>) sessionFactory.getCurrentSession()
                 .createCriteria(clazz)
                 .addOrder(Order.asc(orderParameter))
+                .list();
+    }
+
+    public List<User> getFirst(String orderParameter, int greaterThan, int limit) throws HibernateException {
+        return (List<User>) sessionFactory.getCurrentSession()
+                .createCriteria(clazz)
+                .add(Restrictions.gt(orderParameter, greaterThan))
+                .addOrder(Order.desc(orderParameter))
+                .setMaxResults(limit)
                 .list();
     }
 
@@ -62,6 +72,7 @@ public class UserDao implements EntityDao<User, Long> {
     public void addAttempt(Long id) throws HibernateException {
         User user = (User) sessionFactory.getCurrentSession().get(clazz, id);
         user.setAttempts(user.getAttempts() + 1);
+        user.setDate(Calendar.getInstance().getTime());
         sessionFactory.getCurrentSession().update(user);
     }
 }

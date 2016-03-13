@@ -22,6 +22,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getFirst(String orderParameter, int greaterThan, int limit) {
+        return userDao.getFirst(orderParameter, greaterThan, limit);
+    }
+
+    @Override
     public User getById(Long id) throws HibernateException {
         return userDao.getById(id);
     }

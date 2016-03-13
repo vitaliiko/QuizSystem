@@ -2,7 +2,7 @@ package com.testingSystem.model;
 
 public class Result {
 
-    private int spentTime;
+    private String spentTime;
     private int questionsCount;
     private int rightAnswers;
     private float result;
@@ -12,7 +12,7 @@ public class Result {
     public Result() {
     }
 
-    public Result(int spentTime, int questionsCount, int rightAnswers, float result, int attempts, String messageText) {
+    public Result(String spentTime, int questionsCount, int rightAnswers, float result, int attempts, String messageText) {
         this.spentTime = spentTime;
         this.questionsCount = questionsCount;
         this.rightAnswers = rightAnswers;
@@ -21,11 +21,11 @@ public class Result {
         this.messageText = messageText;
     }
 
-    public int getSpentTime() {
+    public String getSpentTime() {
         return spentTime;
     }
 
-    public void setSpentTime(int spentTime) {
+    public void setSpentTime(String spentTime) {
         this.spentTime = spentTime;
     }
 

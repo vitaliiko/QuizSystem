@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("/quiz")
@@ -45,9 +43,17 @@ public class QuizController {
         session.setAttribute("userId", user.getId());
 
         ModelAndView model = new ModelAndView();
-        model.setViewName(user.isAdmin() ? "adminHome" : "home");
+        model.setViewName("redirect:/quiz/" + (user.isAdmin() ? "adminHome" : "home"));
+        return model;
+    }
+
+    @RequestMapping("/home")
+    public ModelAndView home(HttpSession session) {
+        ModelAndView model = new ModelAndView("home");
+        User user = userService.getById((Long) session.getAttribute("userId"));
         model.addObject("user", user);
         model.addObject("questionsCount", questionService.getQuestionCount());
+        model.addObject("bestUsers", userService.getFirst("bestResult", 0, 5));
         return model;
     }
 
@@ -76,16 +82,16 @@ public class QuizController {
         return questionService.getById(questionId);
     }
 
-    @RequestMapping("/getMaxQuestionsCount")
-    public Integer getQuestionsCount() {
-        return QuestionUtil.QUESTIONS_COUNT;
+    @RequestMapping("/getLimits")
+    public Integer[] getLimits() {
+        return new Integer[] {QuestionUtil.QUESTIONS_COUNT, QuestionUtil.TIME_LIMIT};
     }
 
     @RequestMapping("/getResult")
     public Result getResult(HttpSession session) {
         User user = userService.getById((Long) session.getAttribute("userId"));
         int rightAnswersCount = testUtil.countRightAnswers((Map<Integer, String>) session.getAttribute("userAnswers"));
-        int spentTime = testUtil.countSpentTime((Long) session.getAttribute("time"));
+        String spentTime = testUtil.countSpentTime((long) session.getAttribute("time"));
         float result = testUtil.countResult(QuestionUtil.QUESTIONS_COUNT, rightAnswersCount);
         String message = testUtil.generateMessage(result);
         return new Result(spentTime, QuestionUtil.QUESTIONS_COUNT, rightAnswersCount, result, user.getAttempts(), message);

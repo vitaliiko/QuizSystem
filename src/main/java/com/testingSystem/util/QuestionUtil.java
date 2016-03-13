@@ -12,7 +12,8 @@ import java.util.*;
 @Service
 public class QuestionUtil {
 
-    public static final int QUESTIONS_COUNT = 10;
+    public static final int QUESTIONS_COUNT = 5;
+    public static final int TIME_LIMIT = 30;
     private Random random = new Random();
 
     @Autowired private QuestionService questionService;
