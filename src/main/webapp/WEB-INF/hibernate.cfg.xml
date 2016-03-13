@@ -17,10 +17,10 @@
       <property name="hibernate.c3p0.max_statements">50</property>
       <property name="hibernate.c3p0.idle_test_period">3000</property>
 
-      <mapping class="com.testingSystem.entity.Question"/>
-      <mapping class="com.testingSystem.entity.User"/>
-      <mapping class="com.testingSystem.entity.Answer"/>
-      <mapping class="com.testingSystem.entity.Test"/>
+      <mapping class="com.testing_system.entity.Question"/>
+      <mapping class="com.testing_system.entity.User"/>
+      <mapping class="com.testing_system.entity.Answer"/>
+      <mapping class="com.testing_system.entity.Test"/>
 
   </session-factory>
 </hibernate-configuration>

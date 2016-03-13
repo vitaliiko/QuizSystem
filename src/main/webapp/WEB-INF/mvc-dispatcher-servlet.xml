@@ -6,7 +6,7 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <context:component-scan base-package="com.testingSystem"/>
+    <context:component-scan base-package="com.testing_system"/>
     <msc:annotation-driven/>
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
@@ -44,7 +44,7 @@
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <bean class="com.testingSystem.controller.QuizInterceptor"/>
+            <bean class="com.testing_system.controller.QuizInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 
