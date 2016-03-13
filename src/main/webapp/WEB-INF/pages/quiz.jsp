@@ -46,10 +46,10 @@
             $.getJSON('/quiz/getResult', function (result) {
                 $('#questionDiv').hide();
                 $('#resultDiv').show();
-                $('#spentTime').text('Spent time: ' + result.spentTime);
-                $('#rightAnswers').text('Right answers: ' + result.rightAnswers + '/' + result.questionsCount);
-                $('#points').text('Result: ' + result.points);
-                $('#attempts').text('Attempts: ' + result.attempts);
+                $('#spentTime').text(result.spentTime);
+                $('#rightAnswers').text(result.rightAnswers + '/' + result.questionsCount);
+                $('#points').text(result.points);
+                $('#attempts').text(result.attempts);
                 $('#messageText').text(result.messageText);
             })
         }
@@ -107,25 +107,48 @@
 
 <body>
     <div id="messageDiv" align="center">
-        <p id="messageText"></p>
+        <h3 id="messageText"></h3>
     </div>
 
-    <div id="questionDiv" align="center">
-        <p id="timer"></p>
-        <p id="counter"></p>
-        <p id="questionText"></p>
+    <div id="questionDiv" style="width: 20%; margin: 0 auto;">
+        <div align="center">
+            <p id="counter"></p>
+            <p id="questionText"></p>
+        </div>
+
         <div id="answersForm">
             <div id="answersDiv"></div>
-            <input id="sendAnswer" type="button" value="next">
+        </div>
+
+        <div align="center">
+            <p id="timer"></p>
+            <input id="sendAnswer" type="button" value="Next">
         </div>
     </div>
 
     <form action="/quiz/startTest" id="resultDiv">
         <div align="center">
-            <p id="rightAnswers"></p>
-            <p id="points"></p>
-            <p id="spentTime"></p>
-            <p id="attempts"></p>
+            <table>
+                <caption style="font-weight: bold;">Results</caption>
+                <tr>
+                    <td>Right answers:</td>
+                    <td><p id="rightAnswers"></p></td>
+                </tr>
+                <tr>
+                    <td>Points:</td>
+                    <td><p id="points"></p></td>
+                </tr>
+                <tr>
+                    <td>Spent time:</td>
+                    <td><p id="spentTime"></p></td>
+                </tr>
+                <tr>
+                    <td>Attempts:</td>
+                    <td><p id="attempts"></p></td>
+                </tr>
+            </table>
+
+            <br>
             <input type="submit" value="Try Again"/>
         </div>
     </form>

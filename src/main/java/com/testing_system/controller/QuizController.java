@@ -3,8 +3,6 @@ package com.testing_system.controller;
 import com.testing_system.entity.Question;
 import com.testing_system.entity.User;
 import com.testing_system.exception.AuthException;
-import com.testing_system.exception.WrongFormatException;
-import com.testing_system.model.QuestionModel;
 import com.testing_system.model.Result;
 import com.testing_system.service.QuestionService;
 import com.testing_system.service.UserService;
@@ -12,7 +10,6 @@ import com.testing_system.util.QuizUtil;
 import com.testing_system.util.UserUtil;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -44,7 +41,7 @@ public class QuizController {
         session.setAttribute("userId", user.getId());
 
         ModelAndView model = new ModelAndView();
-        model.setViewName("redirect:/quiz/" + (user.isAdmin() ? "adminHome" : "home"));
+        model.setViewName("redirect:/quiz/home");
         return model;
     }
 
@@ -54,6 +51,8 @@ public class QuizController {
         User user = userService.getById((Long) session.getAttribute("userId"));
         model.addObject("user", user);
         model.addObject("questionsCount", questionService.getQuestionCount());
+        model.addObject("questionsInQuiz", QuizUtil.QUESTIONS_COUNT);
+        model.addObject("timeLimit", QuizUtil.TIME_LIMIT);
         model.addObject("bestUsers", userService.getFirst("bestResult", 0, 5));
         return model;
     }
@@ -93,17 +92,6 @@ public class QuizController {
         Result result = quizUtil.prepareResult(userAnswers, (Long) session.getAttribute("time"), user.getAttempts());
         userUtil.setBestResult(user, result.getPoints());
         return result;
-    }
-
-    @RequestMapping(value = "/editQuestion", method = RequestMethod.GET)
-    public ModelAndView editQuestion() {
-        return new ModelAndView("editQuestion");
-    }
-
-    @RequestMapping("/addQuestion")
-    @ResponseStatus(HttpStatus.OK)
-    public void addQuestion(@RequestBody QuestionModel questionModel) throws WrongFormatException {
-        quizUtil.createQuestion(questionModel);
     }
 
     @RequestMapping("/createQuestions")

@@ -7,16 +7,44 @@
 
     <body>
         <div align="center">
+
             <form action="/quiz/startTest">
-                <h3>Hello, ${user.firstName} ${user.lastName}</h3>
-                <p>Questions in test: ${questionsCount}</p>
-                <p>Attempts count: ${user.attempts}</p>
-                <p>Best points: ${user.bestResult}</p>
-                <p>Last attempt: <fmt:formatDate type="date" value="${user.date}"/></p>
+                <h4>Hello, ${user.firstName} ${user.lastName}</h4>
+                <table>
+                    <tr>
+                        <td>Total count of questions:</td>
+                        <td>${questionsCount}</td>
+                    </tr>
+                    <tr>
+                        <td>Questions in one quiz:</td>
+                        <td>${questionsInQuiz}</td>
+                    </tr>
+                    <tr>
+                        <td>Time limit:</td>
+                        <td>${timeLimit} seconds per question</td>
+                    </tr>
+                    <tr>
+                        <td>Attempts count:</td>
+                        <td>${user.attempts}</td>
+                    </tr>
+                    <tr>
+                        <td>Best result:</td>
+                        <td>${user.bestResult}</td>
+                    </tr>
+                    <tr>
+                        <td>Last attempt: </td>
+                        <td>
+                            <fmt:formatDate type="date" value="${user.date}"/>
+                        </td>
+                    </tr>
+                </table>
+
                 <input type="submit" value="Start Test">
-                <br><br>
+                <br><br><br>
+
                 <c:if test="${bestUsers.size() > 0}">
                     <table>
+                        <caption style="font-weight: bold;">Best results</caption>
                         <tr>
                             <td>Date</td>
                             <td>Name</td>
@@ -31,7 +59,9 @@
                         </c:forEach>
                     </table>
                 </c:if>
+
             </form>
+
         </div>
     </body>
 </html>
