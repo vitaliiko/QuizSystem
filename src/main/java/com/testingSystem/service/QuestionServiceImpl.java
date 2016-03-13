@@ -3,7 +3,6 @@ package com.testingSystem.service;
 import com.testingSystem.dao.QuestionDao;
 import com.testingSystem.entity.Answer;
 import com.testingSystem.entity.Question;
-import com.testingSystem.util.HibernateSessionUtil;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,6 @@ import java.util.List;
 public class QuestionServiceImpl implements QuestionService {
 
     @Autowired private QuestionDao questionDao;
-    @Autowired private HibernateSessionUtil sessionUtil;
 
     @Override
     public List<Question> getAll(String orderParameter) throws HibernateException {

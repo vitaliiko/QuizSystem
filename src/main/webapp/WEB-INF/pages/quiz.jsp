@@ -42,8 +42,8 @@
         }
 
         function getResult() {
+            clearInterval(intervalId);
             $.getJSON('/quiz/getResult', function (result) {
-                alert(result.points);
                 $('#questionDiv').hide();
                 $('#resultDiv').show();
                 $('#spentTime').text('Spent time: ' + result.spentTime);
@@ -67,7 +67,6 @@
                     $('#messageText').text('');
                     if (!checkQuestionsCount()) {
                         getResult();
-                        clearInterval(intervalId);
                     }
                     time = timeLimit;
                     getQuestion(userSelection.val());
@@ -111,12 +110,12 @@
         <p id="messageText"></p>
     </div>
 
-    <div id="questionDiv" align="center">
+    <div id="questionDiv" align="center" style="width: 1000px;">
         <p id="timer"></p>
         <p id="counter"></p>
         <p id="questionText"></p>
         <div id="answersForm">
-            <div id="answersDiv"></div>
+            <div id="answersDiv" align="left" style="position: absolute"></div>
             <input id="sendAnswer" type="button" value="next">
         </div>
     </div>

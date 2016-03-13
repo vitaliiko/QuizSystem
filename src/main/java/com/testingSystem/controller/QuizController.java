@@ -9,8 +9,7 @@ import com.testingSystem.model.Result;
 import com.testingSystem.service.AnswerService;
 import com.testingSystem.service.QuestionService;
 import com.testingSystem.service.UserService;
-import com.testingSystem.util.QuestionUtil;
-import com.testingSystem.util.TestUtil;
+import com.testingSystem.util.QuizUtil;
 import com.testingSystem.util.UserUtil;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +29,9 @@ public class QuizController {
 
     @Autowired private UserService userService;
     @Autowired private UserUtil userUtil;
-    @Autowired private QuestionUtil questionUtil;
+    @Autowired private QuizUtil quizUtil;
     @Autowired private QuestionService questionService;
     @Autowired private AnswerService answerService;
-    @Autowired private TestUtil testUtil;
 
     @RequestMapping(value = "/signIn", method = RequestMethod.GET)
     public ModelAndView signIn() {
@@ -65,7 +63,7 @@ public class QuizController {
     @RequestMapping(value = "/startTest", method = RequestMethod.GET)
     public ModelAndView startTest(HttpSession session) throws HibernateException {
         ModelAndView model = new ModelAndView("quiz");
-        session.setAttribute("questions", questionUtil.getRandomQuestions(QuestionUtil.QUESTIONS_COUNT));
+        session.setAttribute("questions", quizUtil.getRandomQuestions(QuizUtil.QUESTIONS_COUNT));
         session.setAttribute("userAnswers", new HashMap<>());
         session.setAttribute("time", System.currentTimeMillis());
         userService.addAttempt((Long) session.getAttribute("userId"));
@@ -79,27 +77,26 @@ public class QuizController {
         if (questionId != null) {
             userAnswers.put(questionId, answer);
         }
-        return questionUtil.getQuestion(idSet);
-    }
-
-    @RequestMapping(value = "/getQuestion/{questionId}")
-    public Question getQuestion(@PathVariable Integer questionId) throws HibernateException {
-        return questionService.getById(questionId);
+        return quizUtil.getQuestion(idSet);
     }
 
     @RequestMapping("/getLimits")
     public Integer[] getLimits() {
-        return new Integer[] {QuestionUtil.QUESTIONS_COUNT, QuestionUtil.TIME_LIMIT};
+        return new Integer[] {QuizUtil.QUESTIONS_COUNT, QuizUtil.TIME_LIMIT};
     }
 
     @RequestMapping("/getResult")
-    public Result getResult(HttpSession session) {
+    public Result getResult(String answer, Integer questionId, HttpSession session) {
         User user = userService.getById((Long) session.getAttribute("userId"));
-        int rightAnswersCount = testUtil.countRightAnswers((Map<Integer, String>) session.getAttribute("userAnswers"));
-        String spentTime = testUtil.countSpentTime((long) session.getAttribute("time"));
-        float result = testUtil.countResult(QuestionUtil.QUESTIONS_COUNT, rightAnswersCount);
-        String message = testUtil.generateMessage(result);
-        return new Result(spentTime, QuestionUtil.QUESTIONS_COUNT, rightAnswersCount, result, user.getAttempts(), message);
+        Map<Integer, String> userAnswers = (Map<Integer, String>) session.getAttribute("userAnswers");
+        if (questionId != null) {
+            userAnswers.put(questionId, answer);
+        }
+        int rightAnswersCount = quizUtil.countRightAnswers((Map<Integer, String>) session.getAttribute("userAnswers"));
+        String spentTime = quizUtil.countSpentTime((long) session.getAttribute("time"));
+        float result = quizUtil.countResult(QuizUtil.QUESTIONS_COUNT, rightAnswersCount);
+        String message = quizUtil.generateMessage(result);
+        return new Result(spentTime, QuizUtil.QUESTIONS_COUNT, rightAnswersCount, result, user.getAttempts(), message);
     }
 
     @RequestMapping(value = "/editQuestion", method = RequestMethod.GET)
@@ -110,21 +107,13 @@ public class QuizController {
     @RequestMapping("/addQuestion")
     @ResponseStatus(HttpStatus.OK)
     public void addQuestion(@RequestBody QuestionModel questionModel) throws WrongFormatException {
-        questionUtil.createQuestion(questionModel);
+        quizUtil.createQuestion(questionModel);
     }
 
     @RequestMapping("/createQuestions")
     public ModelAndView createQuestions() throws HibernateException {
         ModelAndView model = new ModelAndView("home");
-        questionUtil.createQuestions();
-        return model;
-    }
-
-    @RequestMapping("/printQuestion")
-    public ModelAndView question() throws HibernateException {
-        ModelAndView model = new ModelAndView("printQuestion");
-        Question question = questionService.getById(1);
-        model.addObject("question", question);
+        quizUtil.createQuestions();
         return model;
     }
 
