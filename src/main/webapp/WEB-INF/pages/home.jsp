@@ -15,13 +15,22 @@
                 <p>Last attempt: <fmt:formatDate type="date" value="${user.date}"/></p>
                 <input type="submit" value="Start Test">
                 <br><br>
-                <p>Date &emsp;&emsp; User &emsp;&emsp; Result</p>
-                <c:forEach var="user" items="${bestUsers}">
-                    <p>
-                        <fmt:formatDate type="date" value="${user.date}"/> &emsp;
-                        ${user.firstName} ${user.lastName} &emsp; ${user.bestResult} &emsp;
-                    </p>
-                </c:forEach>
+                <c:if test="${bestUsers.size() > 0}">
+                    <table>
+                        <tr>
+                            <td>Date</td>
+                            <td>Name</td>
+                            <td>Result</td>
+                        </tr>
+                        <c:forEach var="user" items="${bestUsers}">
+                            <tr>
+                                <td><fmt:formatDate type="date" value="${user.date}"/></td>
+                                <td>${user.firstName} ${user.lastName}</td>
+                                <td>${user.bestResult}</td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </c:if>
             </form>
         </div>
     </body>

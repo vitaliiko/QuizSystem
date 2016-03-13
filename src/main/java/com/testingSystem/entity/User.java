@@ -27,7 +27,7 @@ public class User {
     private Integer attempts = 0;
 
     @Column
-    private Integer bestResult = 0;
+    private Float bestResult = 0F;
 
     @Column
     private Date date;
@@ -89,11 +89,11 @@ public class User {
         this.attempts = attempts;
     }
 
-    public Integer getBestResult() {
+    public Float getBestResult() {
         return bestResult;
     }
 
-    public void setBestResult(Integer bestResult) {
+    public void setBestResult(Float bestResult) {
         this.bestResult = bestResult;
     }
 

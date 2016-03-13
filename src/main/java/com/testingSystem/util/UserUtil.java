@@ -39,4 +39,11 @@ public class UserUtil {
         }
         return user;
     }
+
+    public void setBestResult(User user, float points) {
+        if (points > user.getBestResult()) {
+            user.setBestResult(points);
+            userService.update(user);
+        }
+    }
 }

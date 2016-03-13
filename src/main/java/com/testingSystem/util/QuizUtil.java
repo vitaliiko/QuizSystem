@@ -4,6 +4,7 @@ import com.testingSystem.entity.Answer;
 import com.testingSystem.entity.Question;
 import com.testingSystem.exception.WrongFormatException;
 import com.testingSystem.model.QuestionModel;
+import com.testingSystem.model.Result;
 import com.testingSystem.service.QuestionService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,5 +123,13 @@ public class QuizUtil {
             return "Nice!";
         }
         return "Awesome!";
+    }
+
+    public Result prepareResult(Map<Integer, String> answersMap, long time, int attempts) {
+        int rightAnswersCount = countRightAnswers(answersMap);
+        String spentTime = countSpentTime(time);
+        float result = countResult(QuizUtil.QUESTIONS_COUNT, rightAnswersCount);
+        String message = generateMessage(result);
+        return new Result(spentTime, QuizUtil.QUESTIONS_COUNT, rightAnswersCount, result, attempts, message);
     }
 }

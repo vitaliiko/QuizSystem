@@ -110,12 +110,12 @@
         <p id="messageText"></p>
     </div>
 
-    <div id="questionDiv" align="center" style="width: 1000px;">
+    <div id="questionDiv" align="center">
         <p id="timer"></p>
         <p id="counter"></p>
         <p id="questionText"></p>
         <div id="answersForm">
-            <div id="answersDiv" align="left" style="position: absolute"></div>
+            <div id="answersDiv"></div>
             <input id="sendAnswer" type="button" value="next">
         </div>
     </div>

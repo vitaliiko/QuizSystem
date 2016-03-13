@@ -27,7 +27,7 @@ public class UserDao implements EntityDao<User, Long> {
                 .list();
     }
 
-    public List<User> getFirst(String orderParameter, int greaterThan, int limit) throws HibernateException {
+    public List<User> getFirst(String orderParameter, float greaterThan, int limit) throws HibernateException {
         return (List<User>) sessionFactory.getCurrentSession()
                 .createCriteria(clazz)
                 .add(Restrictions.gt(orderParameter, greaterThan))

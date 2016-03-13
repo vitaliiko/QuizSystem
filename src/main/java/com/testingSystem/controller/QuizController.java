@@ -6,7 +6,6 @@ import com.testingSystem.exception.AuthException;
 import com.testingSystem.exception.WrongFormatException;
 import com.testingSystem.model.QuestionModel;
 import com.testingSystem.model.Result;
-import com.testingSystem.service.AnswerService;
 import com.testingSystem.service.QuestionService;
 import com.testingSystem.service.UserService;
 import com.testingSystem.util.QuizUtil;
@@ -31,7 +30,6 @@ public class QuizController {
     @Autowired private UserUtil userUtil;
     @Autowired private QuizUtil quizUtil;
     @Autowired private QuestionService questionService;
-    @Autowired private AnswerService answerService;
 
     @RequestMapping(value = "/signIn", method = RequestMethod.GET)
     public ModelAndView signIn() {
@@ -92,11 +90,9 @@ public class QuizController {
         if (questionId != null) {
             userAnswers.put(questionId, answer);
         }
-        int rightAnswersCount = quizUtil.countRightAnswers((Map<Integer, String>) session.getAttribute("userAnswers"));
-        String spentTime = quizUtil.countSpentTime((long) session.getAttribute("time"));
-        float result = quizUtil.countResult(QuizUtil.QUESTIONS_COUNT, rightAnswersCount);
-        String message = quizUtil.generateMessage(result);
-        return new Result(spentTime, QuizUtil.QUESTIONS_COUNT, rightAnswersCount, result, user.getAttempts(), message);
+        Result result = quizUtil.prepareResult(userAnswers, (Long) session.getAttribute("time"), user.getAttempts());
+        userUtil.setBestResult(user, result.getPoints());
+        return result;
     }
 
     @RequestMapping(value = "/editQuestion", method = RequestMethod.GET)
@@ -125,11 +121,9 @@ public class QuizController {
     }
 
     @ExceptionHandler(HibernateException.class)
-    public ModelAndView hibernateExceptionHandler(HibernateException e) {
+    public ModelAndView hibernateExceptionHandler() {
         ModelAndView model = new ModelAndView("errorPages/errorPage");
         model.addObject("errorMessage", "Data base doesn't respond");
         return model;
     }
-
-
 }

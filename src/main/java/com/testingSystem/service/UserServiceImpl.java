@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getFirst(String orderParameter, int greaterThan, int limit) {
+    public List<User> getFirst(String orderParameter, float greaterThan, int limit) {
         return userDao.getFirst(orderParameter, greaterThan, limit);
     }
 

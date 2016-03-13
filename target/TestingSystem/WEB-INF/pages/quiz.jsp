@@ -44,7 +44,6 @@
         function getResult() {
             clearInterval(intervalId);
             $.getJSON('/quiz/getResult', function (result) {
-                alert(result.points);
                 $('#questionDiv').hide();
                 $('#resultDiv').show();
                 $('#spentTime').text('Spent time: ' + result.spentTime);

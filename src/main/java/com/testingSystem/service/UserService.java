@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public interface UserService extends EntityService<User, Long> {
 
-    List<User> getFirst(String orderParameter, int greaterThan, int limit);
+    List<User> getFirst(String orderParameter, float greaterThan, int limit);
 
     User getByEmail(String email) throws HibernateException;
 
