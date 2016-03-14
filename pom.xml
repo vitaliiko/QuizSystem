@@ -121,13 +121,5 @@
                 </configuration>
             </plugin>
         </plugins>
-
-        <resources>
-            <resource>
-                <directory>
-                    src/webapp/resources
-                </directory>
-            </resource>
-        </resources>
     </build>
 </project>
