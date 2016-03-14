@@ -1,4 +1,4 @@
-package com.testing_system.model;
+package com.testing_system.request_object;
 
 public class Result {
 

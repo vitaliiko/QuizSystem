@@ -2,8 +2,8 @@ package com.testing_system.controller;
 
 import com.testing_system.entity.Question;
 import com.testing_system.entity.User;
-import com.testing_system.exception.AuthException;
-import com.testing_system.model.Result;
+import com.testing_system.exception.UserValidateException;
+import com.testing_system.request_object.Result;
 import com.testing_system.service.QuestionService;
 import com.testing_system.service.UserService;
 import com.testing_system.util.QuizUtil;
@@ -35,7 +35,7 @@ public class QuizController {
 
 	@RequestMapping(value = "/signIn", method = RequestMethod.POST)
     public ModelAndView signIn(String firstName, String lastName, String email, HttpSession session)
-            throws AuthException, HibernateException {
+            throws UserValidateException, HibernateException {
 
         User user = userUtil.createUser(firstName, lastName, email);
         session.setAttribute("userId", user.getId());
@@ -45,8 +45,14 @@ public class QuizController {
         return model;
     }
 
+    @RequestMapping("/signOut")
+    public ModelAndView signOut(HttpSession session) {
+        session.invalidate();
+        return new ModelAndView("redirect:/quiz/signIn");
+    }
+
     @RequestMapping("/home")
-    public ModelAndView home(HttpSession session) {
+    public ModelAndView home(HttpSession session) throws HibernateException {
         ModelAndView model = new ModelAndView("home");
         User user = userService.getById((Long) session.getAttribute("userId"));
         model.addObject("user", user);
@@ -69,12 +75,12 @@ public class QuizController {
 
     @RequestMapping(value = "/getQuestion")
     public Question getQuestion(String answer, Integer questionId, HttpSession session) throws HibernateException {
-        Set<Integer> idSet = (Set<Integer>) session.getAttribute("questions");
+        Set<Integer> questions = (Set<Integer>) session.getAttribute("questions");
         Map<Integer, String> userAnswers = (Map<Integer, String>) session.getAttribute("userAnswers");
-        if (questionId != null) {
+        if (questionId != null && !userAnswers.containsKey(questionId)) {
             userAnswers.put(questionId, answer);
         }
-        return quizUtil.getQuestion(idSet);
+        return quizUtil.getQuestion(questions);
     }
 
     @RequestMapping("/getLimits")
@@ -83,8 +89,9 @@ public class QuizController {
     }
 
     @RequestMapping("/getResult")
-    public Result getResult(String answer, Integer questionId, HttpSession session) {
+    public Result getResult(String answer, Integer questionId, HttpSession session) throws HibernateException {
         User user = userService.getById((Long) session.getAttribute("userId"));
+        session.removeAttribute("questions");
         Map<Integer, String> userAnswers = (Map<Integer, String>) session.getAttribute("userAnswers");
         if (questionId != null) {
             userAnswers.put(questionId, answer);
@@ -101,8 +108,8 @@ public class QuizController {
         return model;
     }
 
-    @ExceptionHandler(AuthException.class)
-    public ModelAndView authExceptionHandler(AuthException e) {
+    @ExceptionHandler(UserValidateException.class)
+    public ModelAndView authExceptionHandler(UserValidateException e) {
         ModelAndView model = new ModelAndView("signIn");
         model.addObject("errorMessage", e.getMessage());
         return model;

@@ -1,40 +1,28 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Sign in</title>
+
+    <link href="${pageContext.request.contextPath}/pages/css/bootstrap.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/pages/css/signin.css" rel="stylesheet">
 </head>
 <body>
-<div>
-    <form action="/quiz/signIn" method="post">
-        <div align="center">
-            <h2>Please sign in</h2>
+    <div class="container" style="width: 300px;">
+        <form action="/quiz/signIn" method="post">
+            <h2 class="form-signin-heading">Please sign in</h2>
+
             <h3>${errorMessage}</h3>
 
-            <table>
-                <tr>
-                    <td><label for="inputFirstName">First name:</label></td>
-                    <td><input type="text" name="firstName" id="inputFirstName" required="" autofocus=""></td>
-                </tr>
-                <tr>
-                    <td><label for="inputLastName">Last Name:</label></td>
-                    <td><input type="text" name="lastName" id="inputLastName" required="" autofocus=""></td>
-                </tr>
-                <tr>
-                    <td><label for="inputEmail">Email:</label></td>
-                    <td><input type="text" name="email" id="inputEmail" required="" autofocus=""></td>
-                </tr>
-            </table>
-            <br>
-            <button type="submit">Sign in</button>
-        </div>
-    </form>
+            <input type="text" class="form-control" name="firstName" placeholder="First Name" id="inputFirstName" required="" autofocus="">
 
-    <form action="/quiz/signIn" method="post">
-        <input type="hidden" name="firstName" value="Vasyl">
-        <input type="hidden" name="lastName" value="Ivanov">
-        <input type="hidden" name="email" value="vasyl.ivanov@gmail.com">
-        <button type="submit">Default user</button>
-    </form>
-</div>
+            <input type="text" class="form-control" name="lastName" placeholder="Last Name" id="inputLastName" required="" autofocus="">
+
+            <input type="text" class="form-control" name="email" placeholder="E-mail" id="inputEmail" required="" autofocus="">
+
+            <button type="submit" class="btn btn-lg btn-primary btn-block">Sign in</button>
+        </form>
+    </div>
+
 </body>
 </html>

@@ -3,14 +3,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>AJAX</title>
+    <title>Quiz</title>
 
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="${pageContext.request.contextPath}/pages/js/jquery.js"></script>
 
 </head>
 
 <body>
+    <jsp:include page="header.jsp"/>
     <div id="messageDiv" align="center">
         <h3 id="messageText"></h3>
     </div>
@@ -36,19 +37,19 @@
             <table>
                 <caption style="font-weight: bold;">Results</caption>
                 <tr>
-                    <td>Right answers:</td>
+                    <td align="right">Right answers:</td>
                     <td><p id="rightAnswers"></p></td>
                 </tr>
                 <tr>
-                    <td>Points:</td>
+                    <td align="right">Points:</td>
                     <td><p id="points"></p></td>
                 </tr>
                 <tr>
-                    <td>Spent time:</td>
+                    <td align="right">Spent time:</td>
                     <td><p id="spentTime"></p></td>
                 </tr>
                 <tr>
-                    <td>Attempts:</td>
+                    <td align="right">Attempts:</td>
                     <td><p id="attempts"></p></td>
                 </tr>
             </table>
