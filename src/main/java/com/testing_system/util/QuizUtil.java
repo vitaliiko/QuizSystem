@@ -17,8 +17,6 @@ public class QuizUtil {
     public static final int QUESTIONS_COUNT = 5;
     public static final int TIME_LIMIT = 30;
 
-    private Random random = new Random();
-
     @Autowired private QuestionService questionService;
 
     public Set<Integer> getRandomQuestions(int count) throws HibernateException {
@@ -87,24 +85,5 @@ public class QuizUtil {
         float result = countResult(QuizUtil.QUESTIONS_COUNT, rightAnswersCount);
         String message = generateMessage(result);
         return new Result(spentTime, QuizUtil.QUESTIONS_COUNT, rightAnswersCount, result, attempts, message);
-    }
-
-    public void createQuestions() throws HibernateException {
-        List<Question> questions = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
-            List<Answer> answers = createAnswers();
-            questions.add(new Question("question" + i, answers, answers.get(random.nextInt(answers.size()))));
-        }
-        questions.forEach(questionService::save);
-    }
-
-    private List<Answer> createAnswers() {
-        List<Answer> answers = new ArrayList<>();
-        int answCount = random.nextInt(4) + 1;
-        for (int i = 0; i < answCount; i++) {
-            answers.add(new Answer(String.valueOf(random.nextDouble())));
-        }
-        answers.add(new Answer(String.valueOf(random.nextDouble())));
-        return answers;
     }
 }

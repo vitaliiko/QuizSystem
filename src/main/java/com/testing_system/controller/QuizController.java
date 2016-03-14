@@ -117,11 +117,4 @@ public class QuizController {
         model.addObject("errorMessage", "Data base doesn't respond");
         return model;
     }
-
-    @RequestMapping("/createQuestions")
-    public ModelAndView createQuestions() throws HibernateException {
-        ModelAndView model = new ModelAndView("redirect:/quiz/home");
-        quizUtil.createQuestions();
-        return model;
-    }
 }
