@@ -10,7 +10,7 @@ import java.util.List;
 public class QuizInterceptor extends HandlerInterceptorAdapter {
 
     private final List<String> EXCLUSIONS = Arrays.asList(
-            "/signIn", "/createQuestions"
+            "/signIn", "bootstrap.css", "signin.css"
     );
 
     @Override

@@ -3,15 +3,20 @@
 <html>
 <head>
     <title>Home</title>
+
+    <link href="${pageContext.request.contextPath}/pages/css/bootstrap.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/pages/css/signin.css" rel="stylesheet">
 </head>
 
 <body>
     <jsp:include page="header.jsp"/>
-    <div align="center">
+    <div class="container" align="center">
+        <h4>Hello, ${user.firstName} ${user.lastName}</h4>
+    </div>
 
-        <form action="/quiz/startTest">
-            <h4>Hello, ${user.firstName} ${user.lastName}</h4>
-            <table>
+    <form action="/quiz/startTest">
+        <div class="container" style="width: 50%; margin: 0 auto;">
+            <table class="table">
                 <tr>
                     <td>Total count of questions:</td>
                     <td>${questionsCount}</td>
@@ -39,30 +44,35 @@
                     </td>
                 </tr>
             </table>
+        </div>
 
-            <input type="submit" value="Start Test">
+        <div class="container" align="center">
+            <br><br>
+            <input type="submit" value="Start Test" class="btn btn-lg btn-danger">
+        </div>
+
+    </form>
+
             <br><br><br>
 
-            <c:if test="${bestUsers.size() > 0}">
-                <table>
-                    <caption style="font-weight: bold;">Best results</caption>
+    <div class="container" style="width: 50%; margin: 0 auto;">
+        <c:if test="${bestUsers.size() > 0}">
+            <table class="table">
+                <caption style="font-weight: bold;">Best results</caption>
+                <tr>
+                    <td>Date</td>
+                    <td>Name</td>
+                    <td>Result</td>
+                </tr>
+                <c:forEach var="user" items="${bestUsers}">
                     <tr>
-                        <td>Date</td>
-                        <td>Name</td>
-                        <td>Result</td>
+                        <td><fmt:formatDate type="date" value="${user.date}"/></td>
+                        <td>${user.firstName} ${user.lastName}</td>
+                        <td>${user.bestResult}</td>
                     </tr>
-                    <c:forEach var="user" items="${bestUsers}">
-                        <tr>
-                            <td><fmt:formatDate type="date" value="${user.date}"/></td>
-                            <td>${user.firstName} ${user.lastName}</td>
-                            <td>${user.bestResult}</td>
-                        </tr>
-                    </c:forEach>
-                </table>
-            </c:if>
-
-        </form>
-
+                </c:forEach>
+            </table>
+        </c:if>
     </div>
 </body>
 </html>

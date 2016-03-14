@@ -39,6 +39,9 @@ public class QuizController {
 
         User user = userUtil.createUser(firstName, lastName, email);
         session.setAttribute("userId", user.getId());
+        session.removeAttribute("questions");
+        session.removeAttribute("userAnswers");
+        session.removeAttribute("time");
 
         ModelAndView model = new ModelAndView();
         model.setViewName("redirect:/quiz/home");
@@ -101,13 +104,6 @@ public class QuizController {
         return result;
     }
 
-    @RequestMapping("/createQuestions")
-    public ModelAndView createQuestions() throws HibernateException {
-        ModelAndView model = new ModelAndView("redirect:/quiz/home");
-        quizUtil.createQuestions();
-        return model;
-    }
-
     @ExceptionHandler(UserValidateException.class)
     public ModelAndView authExceptionHandler(UserValidateException e) {
         ModelAndView model = new ModelAndView("signIn");
@@ -117,8 +113,15 @@ public class QuizController {
 
     @ExceptionHandler(HibernateException.class)
     public ModelAndView hibernateExceptionHandler() {
-        ModelAndView model = new ModelAndView("errorPages/errorPage");
+        ModelAndView model = new ModelAndView("errorPage");
         model.addObject("errorMessage", "Data base doesn't respond");
+        return model;
+    }
+
+    @RequestMapping("/createQuestions")
+    public ModelAndView createQuestions() throws HibernateException {
+        ModelAndView model = new ModelAndView("redirect:/quiz/home");
+        quizUtil.createQuestions();
         return model;
     }
 }
