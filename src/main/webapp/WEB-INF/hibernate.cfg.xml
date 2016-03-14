@@ -20,7 +20,6 @@
       <mapping class="com.testing_system.entity.Question"/>
       <mapping class="com.testing_system.entity.User"/>
       <mapping class="com.testing_system.entity.Answer"/>
-      <mapping class="com.testing_system.entity.Test"/>
 
   </session-factory>
 </hibernate-configuration>

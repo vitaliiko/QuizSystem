@@ -27,18 +27,6 @@ public class Question implements Serializable {
     @JoinColumn(name = "answer_id")
     private Answer rightAnswer;
 
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(name = "testToQuestionRelation",
-            joinColumns = {
-                    @JoinColumn(name = "question_id")
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "test_id")
-            }
-    )
-    private List<Test> tests = new ArrayList<>();
-
     public Question() {
     }
 
@@ -80,14 +68,6 @@ public class Question implements Serializable {
         this.rightAnswer = rightAnswer;
     }
 
-    public List<Test> getTests() {
-        return tests;
-    }
-
-    public void setTests(List<Test> tests) {
-        this.tests = tests;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -99,10 +79,7 @@ public class Question implements Serializable {
         if (questionText != null ? !questionText.equals(question.questionText) : question.questionText != null)
             return false;
         if (answers != null ? !answers.equals(question.answers) : question.answers != null) return false;
-        if (rightAnswer != null ? !rightAnswer.equals(question.rightAnswer) : question.rightAnswer != null)
-            return false;
-        return !(tests != null ? !tests.equals(question.tests) : question.tests != null);
-
+        return rightAnswer != null ? !rightAnswer.equals(question.rightAnswer) : question.rightAnswer != null;
     }
 
     @Override
@@ -111,7 +88,6 @@ public class Question implements Serializable {
         result = 31 * result + (questionText != null ? questionText.hashCode() : 0);
         result = 31 * result + (answers != null ? answers.hashCode() : 0);
         result = 31 * result + (rightAnswer != null ? rightAnswer.hashCode() : 0);
-        result = 31 * result + (tests != null ? tests.hashCode() : 0);
         return result;
     }
 }

@@ -96,7 +96,7 @@ public class QuizController {
 
     @RequestMapping("/createQuestions")
     public ModelAndView createQuestions() throws HibernateException {
-        ModelAndView model = new ModelAndView("home");
+        ModelAndView model = new ModelAndView("redirect:/quiz/home");
         quizUtil.createQuestions();
         return model;
     }
