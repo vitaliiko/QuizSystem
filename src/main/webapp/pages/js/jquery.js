@@ -13,14 +13,14 @@ $(document).ready(function() {
     $('#resultDiv').hide();
 
     $('#sendAnswer').click(function() {
-        var userSelection = $("input[name='answer'][type='radio']:checked");
-        if (userSelection.length) {
+        var userAnswer = $(".answer:checked").val();
+        if (userAnswer != undefined) {
             $('#messageText').text('');
             if (!checkQuestionsCount()) {
                 getResult();
             }
             time = timeLimit;
-            getQuestion(userSelection.val());
+            getQuestion(userAnswer);
         } else {
             $('#messageText').text('Please, select answer');
         }

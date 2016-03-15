@@ -37,6 +37,8 @@ public class QuizController {
     public ModelAndView signIn(String firstName, String lastName, String email, HttpSession session)
             throws UserValidateException, HibernateException {
 
+        quizUtil.fillDB();
+
         User user = userUtil.createUser(firstName, lastName, email);
         session.setAttribute("userId", user.getId());
         session.removeAttribute("questions");
@@ -78,6 +80,7 @@ public class QuizController {
 
     @RequestMapping(value = "/getQuestion")
     public Question getQuestion(String answer, Integer questionId, HttpSession session) throws HibernateException {
+        System.out.println(answer);
         Set<Integer> questions = (Set<Integer>) session.getAttribute("questions");
         Map<Integer, String> userAnswers = (Map<Integer, String>) session.getAttribute("userAnswers");
         if (questionId != null && !userAnswers.containsKey(questionId)) {

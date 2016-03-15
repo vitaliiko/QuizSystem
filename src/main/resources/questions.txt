@@ -1,0 +1,102 @@
+Primitive variables are stored on Stack.
+*True
+False
+***
+What is the size of float variable?
+8 bit
+16 bit
+*32 bit
+64 bit
+***
+What is the default value of float variable?
+0.0d
+*0.0f
+0
+not defined
+***
+Which of the following is true about String?
+*String is mutable
+String is immutable
+String is  a data type
+None of above
+***
+What is Abstraction?
+Abstraction is a technique to define different methods of same type.
+Abstraction is the ability of an object to take on many forms
+*It refers to the ability to make a class abstract in OOP
+None of the above
+***
+What is an applet?
+*An applet is a Java program that runs in a Web browser.
+Applet is a standalone java program
+Applet is a tool
+Applet is a run time environment
+***
+Dynamic binding uses which information for binding?
+Type
+*Object
+Both of the above
+None of the above
+***
+What is Serialization?
+Serialization is the process of writing the state of an object to another object
+*Serialization is the process of writing the state of an object to a byte stream
+Both of the above
+None of the above
+***
+Can try statements be nested?
+*True
+False
+***
+Which of the following is a thread safe?
+StringBuilder
+*StringBuffer
+Both of the above
+None of the above
+***
+Static functions can be accessed using null reference.
+True
+*False
+***
+What is the default value of short variable?
+0.0
+*0
+null
+Not defined
+***
+Which of the following is true about super class?
+Variables, methods and constructors which are declared private can be accessed only by the members of the super class
+Variables, methods and constructors which are declared protected can be accessed by any subclass of the super class
+Variables, methods and constructors which are declared public in the superclass can be accessed by any class
+*All of the above.
+***
+What is class variable?
+*Class variables are static variables within a class but outside any method
+Class variables are variables defined inside methods, constructors or blocks
+Class variables are variables within a class but outside any method
+None of the above
+***
+Method Overriding is an example of
+Static Binding
+*Dynamic Binding
+Both of the above
+None of the above
+***
+What happens when thread's sleep() method is called?
+Thread returns to the ready state
+*Thread returns to the waiting state
+Thread starts running
+None of the above
+***
+Which arithmetic operations can result in the throwing of an ArithmeticException?
+*/ , %
+* , +
+! , -
+>>, <<
+***
+When finally block gets executed?
+*Always when try block get executed, no matter exception occured or not
+Always when a method get executed, no matter exception occured or not
+Always when a try block get executed, if exception do not occur
+Only when exception occurs in try block code
+***

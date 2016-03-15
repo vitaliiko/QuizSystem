@@ -1,6 +1,5 @@
 package com.testing_system.util;
 
-import com.testing_system.entity.Answer;
 import com.testing_system.entity.Question;
 import com.testing_system.request_object.Result;
 import com.testing_system.service.QuestionService;
@@ -18,6 +17,7 @@ public class QuizUtil {
     public static final int TIME_LIMIT = 30;
 
     @Autowired private QuestionService questionService;
+    @Autowired private ContentLoader contentLoader;
 
     public Set<Integer> getRandomQuestions(int count) throws HibernateException {
         Set<Integer> questionsIdSet = new HashSet<>();
@@ -85,5 +85,11 @@ public class QuizUtil {
         float result = countResult(QuizUtil.QUESTIONS_COUNT, rightAnswersCount);
         String message = generateMessage(result);
         return new Result(spentTime, QuizUtil.QUESTIONS_COUNT, rightAnswersCount, result, attempts, message);
+    }
+
+    public void fillDB() {
+        if (questionService.getAll("id").size() == 0) {
+            contentLoader.loadContent();
+        }
     }
 }
