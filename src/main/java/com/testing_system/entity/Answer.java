@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Entity
 @Table
-public class Answer implements Serializable {
+public class Answer implements Serializable, Comparable<Answer> {
 
     @Id
     @GeneratedValue
@@ -67,5 +67,10 @@ public class Answer implements Serializable {
     @Override
     public int hashCode() {
         return text != null ? text.hashCode() : 0;
+    }
+
+    @Override
+    public int compareTo(Answer o) {
+        return this.getId().compareTo(o.getId());
     }
 }

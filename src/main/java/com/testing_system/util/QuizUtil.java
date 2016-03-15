@@ -1,5 +1,6 @@
 package com.testing_system.util;
 
+import com.testing_system.entity.Answer;
 import com.testing_system.entity.Question;
 import com.testing_system.request_object.Result;
 import com.testing_system.service.QuestionService;
@@ -36,15 +37,19 @@ public class QuizUtil {
         if (idSet.size() > 0) {
             Integer generatedQuestionId = idSet.stream().findFirst().get();
             idSet.remove(generatedQuestionId);
-            return questionService.getById(generatedQuestionId);
+            Question question = questionService.getById(generatedQuestionId);
+            Collections.sort(question.getAnswers());
+            return question;
         }
         return null;
     }
 
-    public int countRightAnswers(Map<Integer, String> userAnswers) {
+    public int countRightAnswers(Map<Integer, Integer> userAnswers) {
         final int[] answersCount = {0};
         userAnswers.forEach((questionId, answer) -> {
-            if (questionService.getById(questionId).getRightAnswer().getText().equals(answer)) {
+            Question question = questionService.getById(questionId);
+            Answer userAnswer = question.getAnswers().get(answer);
+            if (userAnswer.equals(question.getRightAnswer())) {
                 answersCount[0]++;
             }
         });
@@ -79,7 +84,7 @@ public class QuizUtil {
         return "Awesome!";
     }
 
-    public Result prepareResult(Map<Integer, String> answersMap, long time, int attempts) {
+    public Result prepareResult(Map<Integer, Integer> answersMap, long time, int attempts) {
         int rightAnswersCount = countRightAnswers(answersMap);
         String spentTime = countSpentTime(time);
         float result = countResult(QuizUtil.QUESTIONS_COUNT, rightAnswersCount);

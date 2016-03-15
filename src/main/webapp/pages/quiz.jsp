@@ -20,7 +20,7 @@
         <br>
     </div>
 
-    <div id="questionDiv" class="radio" style="width: 20%; margin: 0 auto;">
+    <div id="questionDiv" class="radio" style="width: 30%; margin: 0 auto;">
         <div align="center">
             <p id="counter"></p>
             <p id="questionText"></p>

@@ -41,8 +41,11 @@ $(document).ready(function() {
             var points = "";
             $('#questionText').text(question.questionText);
             questionId = question.id;
+
+            var i = 0;
             $.each(question.answers, function(index, value) {
-                points += "<p><input type='radio' name='answer' value=" + value.text + ">" + value.text + "</p>";
+                points += "<p><input type='radio' class='answer' name='answer' value=" + i + ">" + value.text + "</p>";
+                i++;
             });
             $('#answersDiv').html(points);
         });

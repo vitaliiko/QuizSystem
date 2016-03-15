@@ -79,10 +79,10 @@ public class QuizController {
     }
 
     @RequestMapping(value = "/getQuestion")
-    public Question getQuestion(String answer, Integer questionId, HttpSession session) throws HibernateException {
+    public Question getQuestion(Integer answer, Integer questionId, HttpSession session) throws HibernateException {
         System.out.println(answer);
         Set<Integer> questions = (Set<Integer>) session.getAttribute("questions");
-        Map<Integer, String> userAnswers = (Map<Integer, String>) session.getAttribute("userAnswers");
+        Map<Integer, Integer> userAnswers = (Map<Integer, Integer>) session.getAttribute("userAnswers");
         if (questionId != null && !userAnswers.containsKey(questionId)) {
             userAnswers.put(questionId, answer);
         }
@@ -95,10 +95,10 @@ public class QuizController {
     }
 
     @RequestMapping("/getResult")
-    public Result getResult(String answer, Integer questionId, HttpSession session) throws HibernateException {
+    public Result getResult(Integer answer, Integer questionId, HttpSession session) throws HibernateException {
         User user = userService.getById((Long) session.getAttribute("userId"));
         session.removeAttribute("questions");
-        Map<Integer, String> userAnswers = (Map<Integer, String>) session.getAttribute("userAnswers");
+        Map<Integer, Integer> userAnswers = (Map<Integer, Integer>) session.getAttribute("userAnswers");
         if (questionId != null) {
             userAnswers.put(questionId, answer);
         }
