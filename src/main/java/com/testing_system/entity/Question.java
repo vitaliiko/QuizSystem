@@ -1,8 +1,15 @@
 package com.testing_system.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +30,13 @@ public class Question implements Serializable {
     @JoinColumn(name = "question_id")
     private List<Answer> answers = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "answer_id")
-    private Answer rightAnswer;
+    @Column
+    private Integer rightAnswer;
 
     public Question() {
     }
 
-    public Question(String questionText, List<Answer> answers, Answer rightAnswer) {
+    public Question(String questionText, List<Answer> answers, Integer rightAnswer) {
         this.questionText = questionText;
         this.answers = answers;
         this.rightAnswer = rightAnswer;
@@ -60,11 +66,11 @@ public class Question implements Serializable {
         this.answers = answers;
     }
 
-    public Answer getRightAnswer() {
+    public Integer getRightAnswer() {
         return rightAnswer;
     }
 
-    public void setRightAnswer(Answer rightAnswer) {
+    public void setRightAnswer(Integer rightAnswer) {
         this.rightAnswer = rightAnswer;
     }
 

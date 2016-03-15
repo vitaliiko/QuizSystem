@@ -8,7 +8,10 @@ import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -37,19 +40,16 @@ public class QuizUtil {
         if (idSet.size() > 0) {
             Integer generatedQuestionId = idSet.stream().findFirst().get();
             idSet.remove(generatedQuestionId);
-            Question question = questionService.getById(generatedQuestionId);
-            Collections.sort(question.getAnswers());
-            return question;
+            return questionService.getById(generatedQuestionId);
         }
         return null;
     }
 
-    public int countRightAnswers(Map<Integer, Integer> userAnswers) {
+    public int countRightAnswers(Map<Integer, Integer> userAnswers) throws HibernateException {
         final int[] answersCount = {0};
         userAnswers.forEach((questionId, answer) -> {
             Question question = questionService.getById(questionId);
-            Answer userAnswer = question.getAnswers().get(answer);
-            if (userAnswer.equals(question.getRightAnswer())) {
+            if (question.getRightAnswer().equals(answer)) {
                 answersCount[0]++;
             }
         });

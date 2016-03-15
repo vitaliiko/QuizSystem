@@ -80,7 +80,6 @@ public class QuizController {
 
     @RequestMapping(value = "/getQuestion")
     public Question getQuestion(Integer answer, Integer questionId, HttpSession session) throws HibernateException {
-        System.out.println(answer);
         Set<Integer> questions = (Set<Integer>) session.getAttribute("questions");
         Map<Integer, Integer> userAnswers = (Map<Integer, Integer>) session.getAttribute("userAnswers");
         if (questionId != null && !userAnswers.containsKey(questionId)) {

@@ -16,10 +16,11 @@ $(document).ready(function() {
         var userAnswer = $(".answer:checked").val();
         if (userAnswer != undefined) {
             $('#messageText').text('');
+            time = timeLimit;
             if (!checkQuestionsCount()) {
                 getResult();
+                return;
             }
-            time = timeLimit;
             getQuestion(userAnswer);
         } else {
             $('#messageText').text('Please, select answer');
